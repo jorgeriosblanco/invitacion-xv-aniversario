@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#211027">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Invitación XV</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="locked">
+  <div id="intro" class="intro">
+    <div class="intro-inner">
+      <div class="envelope">
+        <div class="letter">
+          <div class="monogram" id="introInitial">S</div>
+          <span>Mis XV años</span>
+          <strong id="introName">Sofía</strong>
+        </div>
+        <div class="flap"></div>
+        <div class="seal">XV</div>
+      </div>
+      <button id="openInvitation" class="btn btn-gold">Abrir invitación ✦</button>
+    </div>
+  </div>
+
+  <div class="progress"><span id="progressBar"></span></div>
+  <button id="musicButton" class="floating-button" aria-label="Activar música">♫</button>
+  <audio id="music" loop preload="none"></audio>
+
+  <main class="site">
+    <section class="hero">
+      <img id="heroPhoto" class="hero-photo" alt="">
+      <div class="hero-overlay"></div>
+      <div class="hero-copy">
+        <div class="eyebrow reveal">Una noche inolvidable</div>
+        <div class="roman reveal">XV</div>
+        <h1 id="heroName" class="reveal">Sofía</h1>
+        <p id="heroMessage" class="reveal"></p>
+        <div class="scroll-cue reveal">Desliza para descubrir ↓</div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="quote-card reveal">
+        <span class="quote-mark">“</span>
+        <p id="quoteText"></p>
+        <small id="dateText"></small>
+      </div>
+    </section>
+
+    <section class="section date-section">
+      <div class="center reveal">
+        <div class="eyebrow">Reserva la fecha</div>
+        <div id="dateDay" class="date-day">12</div>
+        <div id="dateMonth" class="date-month">DICIEMBRE</div>
+        <div id="dateYear" class="date-year">2026</div>
+        <div class="countdown">
+          <div><b id="days">000</b><span>Días</span></div>
+          <div><b id="hours">00</b><span>Horas</span></div>
+          <div><b id="minutes">00</b><span>Min</span></div>
+          <div><b id="seconds">00</b><span>Seg</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light">
+      <div class="story-grid">
+        <img id="storyPhoto" class="story-photo reveal" alt="">
+        <div class="reveal">
+          <div class="eyebrow wine">Mi historia continúa</div>
+          <h2 id="storyTitle"></h2>
+          <p id="storyText" class="muted-dark"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light alt">
+      <div class="center reveal">
+        <div class="eyebrow wine">Dónde y cuándo</div>
+        <h2>La celebración</h2>
+      </div>
+      <div id="locations" class="grid two"></div>
+    </section>
+
+    <section class="section dark">
+      <div class="reveal">
+        <div class="eyebrow">El ritmo de la noche</div>
+        <h2>Momentos</h2>
+      </div>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <section id="gallerySection" class="section gallery-section">
+      <div class="center reveal">
+        <div class="eyebrow">Un poco de mí</div>
+        <h2>Recuerdos antes del gran día</h2>
+      </div>
+      <div id="gallery" class="gallery"></div>
+    </section>
+
+    <section class="section light">
+      <div class="center reveal">
+        <div class="eyebrow wine">Antes de venir</div>
+        <h2>Los detalles</h2>
+      </div>
+      <div class="grid two">
+        <article id="dressCodeCard" class="detail-card reveal">
+          <div class="detail-icon">◇</div>
+          <h3>Código de vestimenta</h3>
+          <p id="dressCodeText"></p>
+        </article>
+
+        <article id="giftsCard" class="detail-card reveal">
+          <div class="detail-icon">✧</div>
+          <h3>Mesa de regalos</h3>
+          <p id="giftsText"></p>
+          <a id="giftsLink" class="btn btn-outline-dark" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section rsvp-section" id="rsvp">
+      <div class="rsvp-card reveal">
+        <div class="final-mark" id="finalInitial">S</div>
+        <div class="eyebrow">RSVP</div>
+        <h2>¿Nos acompañas?</h2>
+        <p id="rsvpStatus" class="rsvp-status">Elige una respuesta.</p>
+        <div class="rsvp-buttons">
+          <button class="btn btn-confirm" data-response="Confirmo">✓ Confirmo</button>
+          <button class="btn btn-light" data-response="No asistiré">No asistiré</button>
+        </div>
+        <div class="extra-actions">
+          <button id="calendarButton" class="btn btn-ghost">＋ Calendario</button>
+          <button id="copyButton" class="btn btn-ghost">Copiar datos</button>
+        </div>
+      </div>
+    </section>
+
+    <footer id="footerText"></footer>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
