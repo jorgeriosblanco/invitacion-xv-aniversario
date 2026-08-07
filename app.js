@@ -74,21 +74,107 @@ function initMusic(){
   const a=$("#music"),b=$("#musicButton");let p=false;
   b.addEventListener("click",async()=>{try{if(p){a.pause();p=false;b.textContent="♫"}else{await a.play();p=true;b.textContent="Ⅱ"}}catch(e){console.warn(e)}});
 }
-async function sendRSVP(response,button){
-  const s=$("#rsvpStatus");
-  if(!C.formspreeEndpoint){s.textContent=`Modo demo: ${response}. Configura formspreeEndpoint en config.js para enviar por correo.`;return}
-  const all=$$("[data-response]");all.forEach(b=>b.disabled=true);button.textContent="Enviando…";s.textContent="Registrando tu respuesta…";
+let pendingResponse="Confirmo";
+
+function openRSVPModal(response){
+  pendingResponse=response;
+  $("#rsvpResponse").value=response;
+  $("#rsvpModalTitle").textContent=response==="Confirmo"?"Confirma tus datos":"Datos de contacto";
+  $("#submitRSVP").textContent=response==="Confirmo"?"Enviar confirmación":"Enviar respuesta";
+  $("#formStatus").textContent="";
+  $("#rsvpModal").classList.add("open");
+  $("#rsvpModal").setAttribute("aria-hidden","false");
+  document.body.classList.add("modal-open");
+  setTimeout(()=>$("#guestName").focus(),150);
+}
+
+function closeRSVPModal(){
+  $("#rsvpModal").classList.remove("open");
+  $("#rsvpModal").setAttribute("aria-hidden","true");
+  document.body.classList.remove("modal-open");
+}
+
+async function submitRSVPForm(e){
+  e.preventDefault();
+
+  const status=$("#formStatus");
+  const submit=$("#submitRSVP");
+  const nombre=$("#guestName").value.trim();
+  const correo=$("#guestEmail").value.trim();
+  const whatsapp=$("#guestWhatsapp").value.trim();
+  const honeypot=$("#website").value.trim();
+
+  if(honeypot){
+    closeRSVPModal();
+    return;
+  }
+
+  if(!nombre || !correo || !whatsapp){
+    status.textContent="Completa todos los campos.";
+    return;
+  }
+
+  if(!C.rsvpEndpoint){
+    status.textContent="Modo demo: configura rsvpEndpoint en config.js para enviar el correo.";
+    return;
+  }
+
+  submit.disabled=true;
+  submit.textContent="Enviando…";
+  status.textContent="Enviando tu respuesta…";
+
+  const data=new URLSearchParams({
+    respuesta: pendingResponse,
+    nombre,
+    correo,
+    whatsapp,
+    evento: `XV ${C.festejada}`,
+    fecha: C.fechaTexto
+  });
+
   try{
-    const r=await fetch(C.formspreeEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({respuesta:response,evento:`XV ${C.festejada}`,fecha:C.fechaTexto})});
-    if(!r.ok)throw new Error();
-    s.textContent="¡Gracias! Hemos recibido tu respuesta.";
-    button.textContent=response==="Confirmo"?"✓ Confirmado":"✓ Respuesta enviada";
-  }catch(e){
-    s.textContent="No pudimos enviar la respuesta. Intenta nuevamente.";
-    all.forEach(b=>b.disabled=false);button.textContent=response==="Confirmo"?"✓ Confirmo":"No asistiré";
+    // no-cors evita problemas de CORS con Google Apps Script.
+    // La respuesta es opaca, por eso no se inspecciona el status HTTP.
+    await fetch(C.rsvpEndpoint,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:data.toString()
+    });
+
+    status.textContent="¡Gracias! Tu respuesta fue enviada.";
+    $("#rsvpStatus").textContent=`Respuesta enviada: ${pendingResponse}.`;
+    setTimeout(()=>{
+      closeRSVPModal();
+      $("#rsvpForm").reset();
+      submit.disabled=false;
+      submit.textContent="Enviar confirmación";
+    },1200);
+  }catch(err){
+    console.error(err);
+    status.textContent="No pudimos enviar tus datos. Intenta nuevamente.";
+    submit.disabled=false;
+    submit.textContent=pendingResponse==="Confirmo"?"Enviar confirmación":"Enviar respuesta";
   }
 }
-function initRSVP(){$$("[data-response]").forEach(b=>b.addEventListener("click",()=>sendRSVP(b.dataset.response,b)))}
+
+function initRSVP(){
+  $$("[data-response]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const response=btn.dataset.response;
+      if(response==="Confirmo" || C.rsvp?.pedirDatosEnRechazo){
+        openRSVPModal(response);
+      }else{
+        $("#rsvpStatus").textContent="Gracias. Registraremos que no asistirás cuando actives el envío por correo.";
+      }
+    });
+  });
+
+  $$("[data-close-modal]").forEach(el=>el.addEventListener("click",closeRSVPModal));
+  $("#rsvpForm").addEventListener("submit",submitRSVPForm);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeRSVPModal()});
+}
+
 function initActions(){
   $("#calendarButton").addEventListener("click",()=>{
     const start=new Date(C.fechaISO),end=new Date(start.getTime()+6*60*60*1000),fmt=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z$/,"Z");

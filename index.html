@@ -140,6 +140,58 @@
     <footer id="footerText"></footer>
   </main>
 
+
+  <div id="rsvpModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvpModalTitle">
+      <button class="modal-close" type="button" aria-label="Cerrar" data-close-modal>×</button>
+      <div class="eyebrow wine">Confirmación de asistencia</div>
+      <h2 id="rsvpModalTitle">Tus datos</h2>
+      <p class="modal-intro">
+        Completa estos datos para enviar tu confirmación al anfitrión.
+        La invitación no los guarda en una base de datos.
+      </p>
+
+      <form id="rsvpForm">
+        <input type="hidden" id="rsvpResponse" name="respuesta" value="Confirmo">
+
+        <div class="form-field">
+          <label for="guestName">Nombre completo</label>
+          <input id="guestName" name="nombre" type="text" autocomplete="name" required maxlength="100"
+                 placeholder="Ej. Ana García López">
+        </div>
+
+        <div class="form-field">
+          <label for="guestEmail">Correo electrónico</label>
+          <input id="guestEmail" name="correo" type="email" autocomplete="email" required maxlength="120"
+                 placeholder="nombre@correo.com">
+        </div>
+
+        <div class="form-field">
+          <label for="guestWhatsapp">Número de WhatsApp</label>
+          <input id="guestWhatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required maxlength="25"
+                 placeholder="Ej. +52 427 123 4567">
+        </div>
+
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Sitio web</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <p id="formStatus" class="form-status"></p>
+
+        <button id="submitRSVP" type="submit" class="btn btn-confirm form-submit">
+          Enviar confirmación
+        </button>
+
+        <p class="privacy-note">
+          Los datos se envían por correo al destinatario configurado. Este prototipo no usa
+          una base de datos ni Google Sheets.
+        </p>
+      </form>
+    </div>
+  </div>
+
   <script src="./config.js"></script>
   <script src="./app.js"></script>
 </body>

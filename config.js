@@ -72,19 +72,19 @@ window.INVITACION = {
     archivo: "./assets/audio/musica.mp3"
   },
 
-// URL pública de Google Apps Script desplegado como Web App.
-// Ejemplo:
-// https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzZvdSNEZBBjl3Yf9xvaoWla_Z9mRcxk25MvUcfuMdVxdo5i_ZaPYTL1tL9brdyBT-n/exec",
+  // URL pública de tu Google Apps Script desplegado como Web App.
+  // Ejemplo: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+  rsvpEndpoint: "",
 
-rsvp: {
-  confirmacion: "Confirmo",
-  rechazo: "No asistiré",
 
-  // false = solo Confirmo solicita nombre, correo y WhatsApp.
-  // true = No asistiré también solicita esos datos.
-  pedirDatosEnRechazo: false
-},
+  rsvp: {
+    confirmacion: "Confirmo",
+    rechazo: "No asistiré",
+
+    // false = solo "Confirmo" solicita nombre/correo/WhatsApp.
+    // true  = también "No asistiré" solicita esos datos.
+    pedirDatosEnRechazo: false
+  },
 
   pie: "XV Sofía · Invitación digital"
 };
