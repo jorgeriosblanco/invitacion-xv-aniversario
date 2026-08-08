@@ -130,8 +130,12 @@ footer{padding:32px 22px 70px;text-align:center;color:rgba(255,255,255,.38);font
 .modal-close{position:absolute;right:16px;top:14px;width:42px;height:42px;border-radius:50%;border:0;background:#eee2e5;color:var(--wine);font-size:1.7rem;line-height:1}
 .form-field{margin-bottom:16px;text-align:left}
 .form-field label{display:block;margin:0 0 7px;font-weight:800;font-size:.82rem}
-.form-field input{width:100%;min-height:52px;border:1px solid rgba(33,16,39,.16);border-radius:15px;background:white;color:var(--ink);padding:0 14px;font:inherit;outline:none}
-.form-field input:focus{border-color:var(--wine);box-shadow:0 0 0 3px rgba(124,58,98,.10)}
+.form-field input,.form-field textarea{width:100%;border:1px solid rgba(33,16,39,.16);border-radius:15px;background:white;color:var(--ink);font:inherit;outline:none}
+.form-field input{min-height:52px;padding:0 14px}
+.form-field textarea{min-height:92px;max-height:132px;padding:13px 14px;line-height:1.45;resize:vertical}
+.form-field input:focus,.form-field textarea:focus{border-color:var(--wine);box-shadow:0 0 0 3px rgba(124,58,98,.10)}
+.optional-label{font-weight:600;color:var(--muted);font-size:.74rem}
+.field-note{display:block;margin-top:6px;color:var(--muted);font-size:.7rem}
 .form-submit{width:100%;margin-top:4px}
 .form-status{min-height:22px;font-size:.9rem;margin:4px 0 12px;color:var(--wine)}
 .privacy-note{font-size:.72rem;color:var(--muted);margin:14px 0 0;line-height:1.5;text-align:center}

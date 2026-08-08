@@ -290,6 +290,7 @@ async function submitRSVPForm(e){
   const nombre=$("#guestName").value.trim();
   const correo=$("#guestEmail").value.trim();
   const whatsapp=$("#guestWhatsapp").value.trim();
+  const comentarios=$("#guestComments").value.trim().slice(0,280);
   const honeypot=$("#website").value.trim();
 
   if(honeypot){
@@ -316,6 +317,7 @@ async function submitRSVPForm(e){
     nombre,
     correo,
     whatsapp,
+    comentarios,
     evento: `XV ${C.festejada}`,
     fecha: C.fechaTexto
   });
@@ -346,17 +348,20 @@ async function submitRSVPForm(e){
 }
 
 function exitInvitation(){
-  try{window.close()}catch{}
+  closeRSVPModal();
 
-  setTimeout(()=>{
-    if(document.visibilityState!=="visible")return;
+  // En navegadores embebidos (por ejemplo, WhatsApp) no intentamos
+  // cerrar la ventana. Regresamos al inicio y mostramos nuevamente
+  // el sobre de la invitación.
+  window.scrollTo({top:0,left:0,behavior:"auto"});
 
-    if(history.length>1){
-      history.back();
-    }else{
-      location.replace("about:blank");
-    }
-  },180);
+  const intro=$("#intro");
+  intro.classList.remove("opening","closed");
+  document.body.classList.add("locked");
+
+  requestAnimationFrame(()=>{
+    $("#openInvitation")?.focus({preventScroll:true});
+  });
 }
 
 function initRSVP(){
