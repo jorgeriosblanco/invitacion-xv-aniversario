@@ -416,9 +416,55 @@ function openInvitation(){
   },950);
 }
 
+function positionIntroHotspot(){
+  const img=$("#introPhoto");
+  const scene=$(".intro-scene");
+  const hotspot=$("#openInvitation");
+
+  if(!img || !scene || !hotspot || !img.naturalWidth || !img.naturalHeight)return;
+
+  const h=C.intro?.hotspot||{};
+  const nx=Number.isFinite(h.x)?h.x:.421;
+  const ny=Number.isFinite(h.y)?h.y:.617;
+
+  const sceneW=scene.clientWidth;
+  const sceneH=scene.clientHeight;
+  const imageW=img.naturalWidth;
+  const imageH=img.naturalHeight;
+
+  // Replica exactamente el cálculo de object-fit: cover.
+  const scale=Math.max(sceneW/imageW,sceneH/imageH);
+  const renderedW=imageW*scale;
+  const renderedH=imageH*scale;
+  const offsetX=(sceneW-renderedW)/2;
+  const offsetY=(sceneH-renderedH)/2;
+
+  const x=offsetX+(nx*renderedW);
+  const y=offsetY+(ny*renderedH);
+
+  // Área táctil más grande que el sello real, pero el aro visual
+  // permanece centrado sobre la cera.
+  const requested=Number(h.diametro)||108;
+  const responsive=Math.min(sceneW,sceneH)*.27;
+  const size=clamp(Math.min(requested,responsive),82,112);
+
+  hotspot.style.left=`${x}px`;
+  hotspot.style.top=`${y}px`;
+  hotspot.style.width=`${size}px`;
+  hotspot.style.height=`${size}px`;
+}
+
 function initIntro(){
   const btn=$("#openInvitation");
+  const img=$("#introPhoto");
+
   btn.addEventListener("click",openInvitation);
+
+  if(img.complete)positionIntroHotspot();
+  else img.addEventListener("load",positionIntroHotspot,{once:true});
+
+  addEventListener("resize",positionIntroHotspot,{passive:true});
+  addEventListener("orientationchange",()=>setTimeout(positionIntroHotspot,120),{passive:true});
 }
 
 function initProgress(){

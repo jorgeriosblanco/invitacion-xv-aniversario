@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css?v=8">
+  <link rel="stylesheet" href="./styles.css?v=9">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
@@ -20,11 +20,17 @@
         <p id="introMessage">Un mensajero real ha llegado con tu invitación.</p>
       </div>
 
-      <button id="openInvitation" class="intro-hotspot" type="button" aria-label="Abrir invitación">
-        <span class="intro-hotspot-arrow">→</span>
-        <span class="intro-hotspot-text">
-          <small id="introInstruction">Toca el sobre para abrir</small>
-          <strong>Abrir aquí</strong>
+      <button id="openInvitation"
+              class="seal-hotspot"
+              type="button"
+              aria-label="Tocar el sello rojo para abrir la invitación">
+        <span class="seal-touch-area" aria-hidden="true">
+          <span class="seal-ring"></span>
+          <span class="seal-ring seal-ring-delay"></span>
+        </span>
+        <span class="seal-instruction" aria-hidden="true">
+          <span class="seal-arrow">↓</span>
+          <strong id="introInstruction">Abre aquí</strong>
         </span>
       </button>
     </div>
@@ -280,7 +286,7 @@
     </div>
   </div>
 
-<script src="./config.js?v=8"></script>
-<script src="./app.js?v=8"></script>
+<script src="./config.js?v=9"></script>
+<script src="./app.js?v=9"></script>
 </body>
 </html>

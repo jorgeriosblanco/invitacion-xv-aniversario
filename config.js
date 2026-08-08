@@ -12,7 +12,16 @@ window.INVITACION = {
   intro: {
     foto: "./assets/fotos/sobre.jpg",
     mensaje: "Un mensajero real ha llegado con tu invitación.",
-    instruccion: "Toca el sobre para abrir"
+    instruccion: "Abre aquí",
+
+    // Coordenadas normalizadas del centro del sello rojo dentro de sobre.jpg.
+    // El JavaScript corrige automáticamente el recorte producido por object-fit: cover,
+    // por lo que el hotspot seguirá alineado en distintos tamaños de teléfono.
+    hotspot: {
+      x: 0.421,
+      y: 0.617,
+      diametro: 108
+    }
   },
 
   agradecimiento: {
