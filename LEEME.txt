@@ -1,0 +1,21 @@
+ACTUALIZACIÓN PARA IMÁGENES JPG
+
+Sustituye únicamente config.js en la raíz del repositorio.
+
+Después sube estas imágenes a:
+assets/fotos/
+
+Con estos nombres exactos:
+- portada.jpg
+- historia.jpg
+- galeria-01.jpg
+- galeria-02.jpg
+- galeria-03.jpg
+
+Todas recomendadas en:
+1200 x 1600 px
+proporción vertical 3:4
+formato JPG
+
+No necesitas modificar styles.css, index.html ni app.js.
+El CSS 3:4 que ya tienes funciona igual con JPG.

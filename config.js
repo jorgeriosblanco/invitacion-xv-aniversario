@@ -11,7 +11,7 @@ window.INVITACION = {
 
   portada: {
     mensaje: "Quiero compartir contigo uno de los días más importantes de mi vida.",
-    foto: "./assets/fotos/portada.svg"
+    foto: "./assets/fotos/portada.jpg"
   },
 
   frase: "Hay momentos que pasan una sola vez, pero viven para siempre en quienes los compartieron.",
@@ -19,7 +19,7 @@ window.INVITACION = {
   historia: {
     titulo: "Una nueva etapa comienza.",
     texto: "Después de tantos sueños, risas y momentos compartidos, llega una noche que quiero vivir rodeada de las personas que forman parte de mi historia.",
-    foto: "./assets/fotos/historia.svg"
+    foto: "./assets/fotos/historia.jpg"
   },
 
   ubicaciones: [
@@ -50,9 +50,9 @@ window.INVITACION = {
   galeria: {
     activa: true,
     fotos: [
-      "./assets/fotos/galeria-01.svg",
-      "./assets/fotos/galeria-02.svg",
-      "./assets/fotos/galeria-03.svg"
+      "./assets/fotos/galeria-01.jpg",
+      "./assets/fotos/galeria-02.jpg",
+      "./assets/fotos/galeria-03.jpg"
     ]
   },
 
@@ -73,9 +73,7 @@ window.INVITACION = {
   },
 
   // URL pública de tu Google Apps Script desplegado como Web App.
-  // Ejemplo: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzZvdSNEZBBjl3Yf9xvaoWla_Z9mRcxk25MvUcfuMdVxdo5i_ZaPYTL1tL9brdyBT-n/exec",
-
 
   rsvp: {
     confirmacion: "Confirmo",
