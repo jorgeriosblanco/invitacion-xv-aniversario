@@ -74,7 +74,7 @@ window.INVITACION = {
 
   // URL pública de tu Google Apps Script desplegado como Web App.
   // Ejemplo: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-  rsvpEndpoint: "",
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzZvdSNEZBBjl3Yf9xvaoWla_Z9mRcxk25MvUcfuMdVxdo5i_ZaPYTL1tL9brdyBT-n/exec",
 
 
   rsvp: {
