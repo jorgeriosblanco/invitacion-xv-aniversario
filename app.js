@@ -6,15 +6,24 @@ const hide=s=>{const e=$(s);if(e)e.style.display="none"};
 
 function render(){
   document.title=`XV ${C.festejada} — Invitación`;
-  setText("#introInitial",C.inicial); setText("#introName",C.festejada.split(" ")[0]);
+  setText("#introName",C.festejada.split(" ")[0]);
   setText("#heroName",C.festejada.split(" ")[0]); setText("#heroMessage",C.portada.mensaje);
   setText("#quoteText",C.frase); setText("#dateText",C.fechaTexto);
   setText("#storyTitle",C.historia.titulo); setText("#storyText",C.historia.texto);
   setText("#dressCodeText",C.dressCode.texto); setText("#giftsText",C.regalos.texto);
   setText("#finalInitial",C.inicial); setText("#footerText",C.pie);
 
+  $("#introPhoto").src=C.intro?.foto||C.portada.foto;
+  $("#introPhoto").alt=`Sobre de la invitación de ${C.festejada}`;
   $("#heroPhoto").src=C.portada.foto; $("#heroPhoto").alt=`Retrato de ${C.festejada}`;
   $("#storyPhoto").src=C.historia.foto; $("#storyPhoto").alt=`Fotografía de ${C.festejada}`;
+
+  if(C.dressCode?.foto){
+    $("#dressCodePhoto").src=C.dressCode.foto;
+  }
+  if(C.regalos?.foto){
+    $("#giftsPhoto").src=C.regalos.foto;
+  }
 
   const d=new Date(C.fechaISO);
   setText("#dateDay",String(d.getDate()).padStart(2,"0"));
@@ -23,11 +32,15 @@ function render(){
 
   $("#locations").innerHTML=C.ubicaciones.map(u=>`
     <article class="place-card reveal">
-      <div class="map-art"></div>
-      <div class="place-tag">${u.tipo} · ${u.hora}</div>
-      <h3>${u.nombre}</h3>
-      <p>${u.direccion}</p>
-      <a class="btn btn-outline-dark" href="${u.mapa}" target="_blank" rel="noopener">Abrir ubicación ↗</a>
+      ${u.foto
+        ? `<img class="place-photo" src="${u.foto}" alt="${u.tipo}: ${u.nombre}">`
+        : `<div class="map-art"></div>`}
+      <div class="place-card-body">
+        <div class="place-tag">${u.tipo} · ${u.hora}</div>
+        <h3>${u.nombre}</h3>
+        <p>${u.direccion}</p>
+        <a class="btn btn-outline-dark" href="${u.mapa}" target="_blank" rel="noopener">Abrir ubicación ↗</a>
+      </div>
     </article>`).join("");
 
   $("#timeline").innerHTML=C.itinerario.map(i=>`
@@ -221,6 +234,35 @@ function initMusic(){
   b.addEventListener("click",async()=>{try{if(p){a.pause();p=false;b.textContent="♫"}else{await a.play();p=true;b.textContent="Ⅱ"}}catch(e){console.warn(e)}});
 }
 let pendingResponse="Confirmo";
+const RSVP_STORAGE_KEY=`yrw-rsvp:${C.festejada}:${C.fechaISO}`;
+
+function getStoredRSVP(){
+  try{return localStorage.getItem(RSVP_STORAGE_KEY)||""}catch{return ""}
+}
+
+function storeRSVP(response){
+  try{localStorage.setItem(RSVP_STORAGE_KEY,response)}catch{}
+}
+
+function applyCompletedRSVP(response,shouldStore=true){
+  if(shouldStore)storeRSVP(response);
+
+  $$("[data-response]").forEach(btn=>{
+    btn.disabled=true;
+    btn.setAttribute("aria-disabled","true");
+  });
+
+  const card=$("#rsvp .rsvp-card");
+  card?.classList.add("answered");
+
+  if(response==="Confirmo"){
+    $("#rsvpStatus").textContent="✓ Ya confirmaste tu asistencia. ¡Te esperamos!";
+  }else{
+    $("#rsvpStatus").textContent="Respuesta registrada: no asistirás. Gracias por avisarnos.";
+  }
+
+  $("#exitButton").hidden=false;
+}
 
 function openRSVPModal(response){
   pendingResponse=response;
@@ -287,12 +329,13 @@ async function submitRSVPForm(e){
     });
 
     status.textContent="¡Gracias! Tu respuesta fue enviada.";
-    $("#rsvpStatus").textContent=`Respuesta enviada: ${pendingResponse}.`;
+    applyCompletedRSVP(pendingResponse,true);
+
     setTimeout(()=>{
       closeRSVPModal();
       $("#rsvpForm").reset();
       submit.disabled=false;
-      submit.textContent="Enviar confirmación";
+      submit.textContent=pendingResponse==="Confirmo"?"Enviar confirmación":"Enviar respuesta";
     },1200);
   }catch(err){
     console.error(err);
@@ -302,20 +345,46 @@ async function submitRSVPForm(e){
   }
 }
 
+function exitInvitation(){
+  try{window.close()}catch{}
+
+  setTimeout(()=>{
+    if(document.visibilityState!=="visible")return;
+
+    if(history.length>1){
+      history.back();
+    }else{
+      location.replace("about:blank");
+    }
+  },180);
+}
+
 function initRSVP(){
+  const stored=getStoredRSVP();
+  if(stored==="Confirmo"||stored==="No asistiré"){
+    applyCompletedRSVP(stored,false);
+  }
+
   $$("[data-response]").forEach(btn=>{
     btn.addEventListener("click",()=>{
+      if(getStoredRSVP())return;
+
       const response=btn.dataset.response;
+
       if(response==="Confirmo" || C.rsvp?.pedirDatosEnRechazo){
         openRSVPModal(response);
       }else{
-        $("#rsvpStatus").textContent="Gracias. Registraremos que no asistirás cuando actives el envío por correo.";
+        // Con pedirDatosEnRechazo:false no se envía correo porque no
+        // tenemos identidad del invitado. Sí queda registrada la decisión
+        // en este navegador y la interfaz se cierra para evitar duplicados.
+        applyCompletedRSVP(response,true);
       }
     });
   });
 
   $$("[data-close-modal]").forEach(el=>el.addEventListener("click",closeRSVPModal));
   $("#rsvpForm").addEventListener("submit",submitRSVPForm);
+  $("#exitButton").addEventListener("click",exitInvitation);
   document.addEventListener("keydown",e=>{if(e.key==="Escape")closeRSVPModal()});
 }
 

@@ -6,19 +6,18 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css?v=3">
+  <link rel="stylesheet" href="./styles.css?v=4">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
     <div class="intro-inner">
-      <div class="envelope">
-        <div class="letter">
-          <div class="monogram" id="introInitial">S</div>
+      <div class="intro-photo-card">
+        <img id="introPhoto" class="intro-photo" alt="Sobre de la invitación">
+        <div class="intro-photo-shade"></div>
+        <div class="intro-photo-copy">
           <span>Mis XV años</span>
           <strong id="introName">Sofía</strong>
         </div>
-        <div class="flap"></div>
-        <div class="seal">XV</div>
       </div>
       <button id="openInvitation" class="btn btn-gold">Abrir invitación ✦</button>
     </div>
@@ -135,17 +134,23 @@
         <h2>Los detalles</h2>
       </div>
       <div class="grid two">
-        <article id="dressCodeCard" class="detail-card reveal">
-          <div class="detail-icon">◇</div>
-          <h3>Código de vestimenta</h3>
-          <p id="dressCodeText"></p>
+        <article id="dressCodeCard" class="detail-card detail-card-photo reveal">
+          <img id="dressCodePhoto" class="detail-photo" alt="Inspiración de código de vestimenta">
+          <div class="detail-card-body">
+            <div class="detail-icon">◇</div>
+            <h3>Código de vestimenta</h3>
+            <p id="dressCodeText"></p>
+          </div>
         </article>
 
-        <article id="giftsCard" class="detail-card reveal">
-          <div class="detail-icon">✧</div>
-          <h3>Mesa de regalos</h3>
-          <p id="giftsText"></p>
-          <a id="giftsLink" class="btn btn-outline-dark" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
+        <article id="giftsCard" class="detail-card detail-card-photo reveal">
+          <img id="giftsPhoto" class="detail-photo" alt="Mesa de regalos">
+          <div class="detail-card-body">
+            <div class="detail-icon">✧</div>
+            <h3>Mesa de regalos</h3>
+            <p id="giftsText"></p>
+            <a id="giftsLink" class="btn btn-outline-dark" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
+          </div>
         </article>
       </div>
     </section>
@@ -160,6 +165,7 @@
           <button class="btn btn-confirm" data-response="Confirmo">✓ Confirmo</button>
           <button class="btn btn-light" data-response="No asistiré">No asistiré</button>
         </div>
+        <button id="exitButton" class="btn btn-exit" type="button" hidden>Salir</button>
         <div class="extra-actions">
           <button id="calendarButton" class="btn btn-ghost">＋ Calendario</button>
           <button id="copyButton" class="btn btn-ghost">Copiar datos</button>
@@ -221,7 +227,7 @@
     </div>
   </div>
 
-<script src="./config.js?v=3"></script>
-<script src="./app.js?v=3"></script>
+<script src="./config.js?v=4"></script>
+<script src="./app.js?v=4"></script>
 </body>
 </html>

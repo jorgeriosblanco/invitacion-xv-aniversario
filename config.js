@@ -9,6 +9,10 @@ window.INVITACION = {
   fechaISO: "2026-12-12T17:00:00-06:00",
   fechaTexto: "12 de diciembre de 2026",
 
+  intro: {
+    foto: "./assets/fotos/sobre.jpg"
+  },
+
   portada: {
     mensaje: "Quiero compartir contigo uno de los días más importantes de mi vida.",
     foto: "./assets/fotos/portada.jpg"
@@ -28,14 +32,16 @@ window.INVITACION = {
       hora: "17:00 h",
       nombre: "Templo de Santa Clara",
       direccion: "Centro Histórico · San Juan del Río, Querétaro",
-      mapa: "https://www.google.com/maps/search/?api=1&query=San+Juan+del+Rio+Queretaro"
+      mapa: "https://www.google.com/maps/search/?api=1&query=San+Juan+del+Rio+Queretaro",
+      foto: "./assets/fotos/ceremonia.jpg"
     },
     {
       tipo: "Recepción",
       hora: "19:00 h",
       nombre: "Hacienda Jardín de Luna",
       direccion: "Camino de los Olivos 125 · San Juan del Río, Querétaro",
-      mapa: "https://www.google.com/maps/search/?api=1&query=San+Juan+del+Rio+Queretaro"
+      mapa: "https://www.google.com/maps/search/?api=1&query=San+Juan+del+Rio+Queretaro",
+      foto: "./assets/fotos/recepcion.jpg"
     }
   ],
 
@@ -58,13 +64,15 @@ window.INVITACION = {
 
   dressCode: {
     activo: true,
-    texto: "Formal elegante. Reserva por favor los tonos champagne y rosa empolvado para la quinceañera."
+    texto: "Formal elegante. Reserva por favor los tonos champagne y rosa empolvado para la quinceañera.",
+    foto: "./assets/fotos/dresscode.jpg"
   },
 
   regalos: {
     activo: true,
     texto: "Tu presencia es mi mejor regalo. Si deseas tener un detalle conmigo, puedes consultar nuestra mesa de regalos.",
-    enlace: "https://www.example.com/"
+    enlace: "https://www.example.com/",
+    foto: "./assets/fotos/regalos.jpg"
   },
 
   musica: {
@@ -79,8 +87,8 @@ window.INVITACION = {
     confirmacion: "Confirmo",
     rechazo: "No asistiré",
 
-    // false = solo "Confirmo" solicita nombre/correo/WhatsApp.
-    // true  = también "No asistiré" solicita esos datos.
+    // false = "No asistiré" se registra solo en este navegador.
+    // true  = también "No asistiré" solicita datos y se envía por correo.
     pedirDatosEnRechazo: false
   },
 
