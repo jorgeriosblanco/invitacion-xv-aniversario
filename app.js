@@ -10,17 +10,31 @@ const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 function render(){
   document.title=`XV ${C.festejada} — Invitación`;
+
   setText("#introName",C.festejada.split(" ")[0]);
-  setText("#heroName",C.festejada.split(" ")[0]); setText("#heroMessage",C.portada.mensaje);
-  setText("#quoteText",C.frase); setText("#dateText",C.fechaTexto);
-  setText("#storyTitle",C.historia.titulo); setText("#storyText",C.historia.texto);
-  setText("#dressCodeText",C.dressCode.texto); setText("#giftsText",C.regalos.texto);
-  setText("#finalInitial",C.inicial); setText("#footerText",C.pie);
+  setText("#introMessage",C.intro?.mensaje||"");
+  setText("#introInstruction",C.intro?.instruccion||"Toca para abrir");
+  setText("#heroName",C.festejada.split(" ")[0]);
+  setText("#heroMessage",C.portada.mensaje);
+  setText("#quoteText",C.frase);
+  setText("#dateText",C.fechaTexto);
+  setText("#storyTitle",C.historia.titulo);
+  setText("#storyText",C.historia.texto);
+  setText("#dressCodeText",C.dressCode.texto);
+  setText("#giftsText",C.regalos.texto);
+  setText("#finalInitial",C.inicial);
+  setText("#footerText",C.pie);
+
+  setText("#thankYouTitle",C.agradecimiento?.titulo||"Gracias por tu respuesta");
+  setText("#thankYouText",C.agradecimiento?.texto||"Hemos recibido tu respuesta.");
+  setText("#thankYouSignature",`XV ${C.festejada}`);
 
   $("#introPhoto").src=C.intro?.foto||C.portada.foto;
-  $("#introPhoto").alt=`Sobre de la invitación de ${C.festejada}`;
-  $("#heroPhoto").src=C.portada.foto; $("#heroPhoto").alt=`Retrato de ${C.festejada}`;
-  $("#storyPhoto").src=C.historia.foto; $("#storyPhoto").alt=`Fotografía de ${C.festejada}`;
+  $("#introPhoto").alt=`Mensajero real entregando la invitación de ${C.festejada}`;
+  $("#heroPhoto").src=C.portada.foto;
+  $("#heroPhoto").alt=`Retrato de ${C.festejada}`;
+  $("#storyPhoto").src=C.historia.foto;
+  $("#storyPhoto").alt=`Fotografía de ${C.festejada}`;
 
   if(C.dressCode?.foto)$("#dressCodePhoto").src=C.dressCode.foto;
   if(C.regalos?.foto)$("#giftsPhoto").src=C.regalos.foto;
@@ -393,14 +407,18 @@ function initReveal(){
   $$(".reveal").forEach(e=>o.observe(e));
 }
 
+function openInvitation(){
+  $("#intro").classList.add("opening");
+  setTimeout(()=>{
+    $("#intro").classList.add("closed");
+    document.body.classList.remove("locked","thankyou-open");
+    $("#thankYouScreen").hidden=true;
+  },950);
+}
+
 function initIntro(){
-  $("#openInvitation").addEventListener("click",()=>{
-    $("#intro").classList.add("opening");
-    setTimeout(()=>{
-      $("#intro").classList.add("closed");
-      document.body.classList.remove("locked");
-    },950);
-  });
+  const btn=$("#openInvitation");
+  btn.addEventListener("click",openInvitation);
 }
 
 function initProgress(){
@@ -550,15 +568,22 @@ async function submitRSVPForm(e){
 
 function exitInvitation(){
   closeRSVPModal();
+
+  if(C.musica?.activa){
+    const audio=$("#music");
+    audio.pause();
+    $("#musicButton").textContent="♫";
+  }
+
   window.scrollTo({top:0,left:0,behavior:"auto"});
 
-  const intro=$("#intro");
-  intro.classList.remove("opening","closed");
-  document.body.classList.add("locked");
+  const thanks=$("#thankYouScreen");
+  thanks.hidden=false;
+  document.body.classList.add("locked","thankyou-open");
 
-  requestAnimationFrame(()=>{
-    $("#openInvitation")?.focus({preventScroll:true});
-  });
+  setTimeout(()=>{
+    thanks.classList.add("visible");
+  },20);
 }
 
 function initRSVP(){

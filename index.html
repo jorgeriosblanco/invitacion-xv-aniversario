@@ -6,20 +6,27 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css?v=7">
+  <link rel="stylesheet" href="./styles.css?v=8">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
-    <div class="intro-inner">
-      <div class="intro-photo-card">
-        <img id="introPhoto" class="intro-photo" alt="Sobre de la invitación">
-        <div class="intro-photo-shade"></div>
-        <div class="intro-photo-copy">
-          <span>Mis XV años</span>
-          <strong id="introName">Sofía</strong>
-        </div>
+    <div class="intro-scene">
+      <img id="introPhoto" class="intro-photo" alt="Mensajero real entregando la invitación">
+      <div class="intro-photo-shade"></div>
+
+      <div class="intro-copy">
+        <span class="intro-kicker">Invitación real</span>
+        <strong id="introName">Sofía</strong>
+        <p id="introMessage">Un mensajero real ha llegado con tu invitación.</p>
       </div>
-      <button id="openInvitation" class="btn btn-gold">Abrir invitación ✦</button>
+
+      <button id="openInvitation" class="intro-hotspot" type="button" aria-label="Abrir invitación">
+        <span class="intro-hotspot-arrow">→</span>
+        <span class="intro-hotspot-text">
+          <small id="introInstruction">Toca el sobre para abrir</small>
+          <strong>Abrir aquí</strong>
+        </span>
+      </button>
     </div>
   </div>
 
@@ -27,8 +34,7 @@
   <button id="musicButton" class="floating-button" aria-label="Activar música">♫</button>
   <audio id="music" loop preload="none"></audio>
 
-  <main class="site">
-    <!-- Hero inspirado en Scroll Media Expansion -->
+  <main id="siteRoot" class="site">
     <section id="heroSection" class="hero-expansion">
       <div id="heroSticky" class="hero-sticky">
         <div id="heroMedia" class="hero-media">
@@ -68,7 +74,6 @@
       </div>
     </section>
 
-    <!-- Mi historia: mask reveal + parallax editorial -->
     <section id="storySection" class="section light story-section">
       <div class="story-immersive">
         <div id="storyMedia" class="story-media reveal">
@@ -84,7 +89,6 @@
       </div>
     </section>
 
-    <!-- La celebración: fotografía inmersiva + información flotante -->
     <section id="locationsSection" class="section light alt locations-section">
       <div class="center reveal locations-heading">
         <div class="eyebrow wine">Dónde y cuándo</div>
@@ -94,7 +98,6 @@
       <div id="locations" class="locations-cinema"></div>
     </section>
 
-    <!-- Momentos: tarjetas sticky apilables -->
     <section id="momentsSection" class="section dark moments-section">
       <div class="moments-heading reveal">
         <div class="eyebrow">El ritmo de la noche</div>
@@ -104,7 +107,6 @@
       <div id="timeline" class="timeline-stack"></div>
     </section>
 
-    <!-- Focus Rail 3D -->
     <section id="gallerySection" class="section gallery-section">
       <div class="center reveal">
         <div class="eyebrow">Un poco de mí</div>
@@ -145,7 +147,6 @@
       </div>
     </section>
 
-    <!-- Blur Reveal Deck -->
     <section id="detailsSection" class="section light details-section">
       <div class="center reveal">
         <div class="eyebrow wine">Antes de venir</div>
@@ -209,6 +210,15 @@
     <footer id="footerText"></footer>
   </main>
 
+  <div id="thankYouScreen" class="thankyou-screen" hidden>
+    <div class="thankyou-shell">
+      <div class="eyebrow">Gracias</div>
+      <h2 id="thankYouTitle">Gracias por tu respuesta</h2>
+      <p id="thankYouText">Hemos recibido tu respuesta. Gracias por formar parte de este momento tan especial.</p>
+      <div class="thankyou-signature" id="thankYouSignature">XV Sofía Mendoza</div>
+    </div>
+  </div>
+
   <div id="rsvpModal" class="modal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvpModalTitle">
@@ -270,7 +280,7 @@
     </div>
   </div>
 
-<script src="./config.js?v=7"></script>
-<script src="./app.js?v=7"></script>
+<script src="./config.js?v=8"></script>
+<script src="./app.js?v=8"></script>
 </body>
 </html>

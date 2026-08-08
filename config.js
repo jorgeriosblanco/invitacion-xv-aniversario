@@ -10,7 +10,14 @@ window.INVITACION = {
   fechaTexto: "12 de diciembre de 2026",
 
   intro: {
-    foto: "./assets/fotos/sobre.jpg"
+    foto: "./assets/fotos/sobre.jpg",
+    mensaje: "Un mensajero real ha llegado con tu invitación.",
+    instruccion: "Toca el sobre para abrir"
+  },
+
+  agradecimiento: {
+    titulo: "Gracias por tu respuesta",
+    texto: "Hemos recibido tu respuesta. Gracias por formar parte de este momento tan especial."
   },
 
   portada: {
