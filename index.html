@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css?v=6">
+  <link rel="stylesheet" href="./styles.css?v=7">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
@@ -28,19 +28,24 @@
   <audio id="music" loop preload="none"></audio>
 
   <main class="site">
-    <section class="hero">
-      <img id="heroPhoto" class="hero-photo" alt="">
-      <div class="hero-overlay"></div>
-      <div class="hero-copy">
-        <div class="eyebrow reveal">Una noche inolvidable</div>
-        <div class="roman reveal">XV</div>
-        <h1 id="heroName" class="reveal">Sofía</h1>
-        <p id="heroMessage" class="reveal"></p>
-        <div class="scroll-cue reveal">Desliza para descubrir ↓</div>
+    <!-- Hero inspirado en Scroll Media Expansion -->
+    <section id="heroSection" class="hero-expansion">
+      <div id="heroSticky" class="hero-sticky">
+        <div id="heroMedia" class="hero-media">
+          <img id="heroPhoto" class="hero-photo" alt="">
+          <div class="hero-overlay"></div>
+          <div id="heroCopy" class="hero-copy">
+            <div class="eyebrow">Una noche inolvidable</div>
+            <div class="roman">XV</div>
+            <h1 id="heroName">Sofía</h1>
+            <p id="heroMessage"></p>
+            <div class="scroll-cue">Desliza para descubrir ↓</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section dark">
+    <section class="section dark quote-section">
       <div class="quote-card reveal">
         <span class="quote-mark">“</span>
         <p id="quoteText"></p>
@@ -63,37 +68,48 @@
       </div>
     </section>
 
-    <section class="section light">
-      <div class="story-grid">
-        <img id="storyPhoto" class="story-photo reveal" alt="">
-        <div class="reveal">
+    <!-- Mi historia: mask reveal + parallax editorial -->
+    <section id="storySection" class="section light story-section">
+      <div class="story-immersive">
+        <div id="storyMedia" class="story-media reveal">
+          <img id="storyPhoto" class="story-photo" loading="lazy" decoding="async" alt="">
+          <div class="story-glow"></div>
+        </div>
+        <div id="storyCopy" class="story-copy reveal">
           <div class="eyebrow wine">Mi historia continúa</div>
           <h2 id="storyTitle"></h2>
           <p id="storyText" class="muted-dark"></p>
+          <div class="story-signature">XV ✦</div>
         </div>
       </div>
     </section>
 
-    <section class="section light alt">
-      <div class="center reveal">
+    <!-- La celebración: fotografía inmersiva + información flotante -->
+    <section id="locationsSection" class="section light alt locations-section">
+      <div class="center reveal locations-heading">
         <div class="eyebrow wine">Dónde y cuándo</div>
         <h2>La celebración</h2>
+        <p class="section-lead">Dos escenarios para una misma historia.</p>
       </div>
-      <div id="locations" class="grid two"></div>
+      <div id="locations" class="locations-cinema"></div>
     </section>
 
-    <section class="section dark">
-      <div class="reveal">
+    <!-- Momentos: tarjetas sticky apilables -->
+    <section id="momentsSection" class="section dark moments-section">
+      <div class="moments-heading reveal">
         <div class="eyebrow">El ritmo de la noche</div>
         <h2>Momentos</h2>
+        <p>Desliza y descubre cómo se construye la noche.</p>
       </div>
-      <div id="timeline" class="timeline"></div>
+      <div id="timeline" class="timeline-stack"></div>
     </section>
 
+    <!-- Focus Rail 3D -->
     <section id="gallerySection" class="section gallery-section">
       <div class="center reveal">
         <div class="eyebrow">Un poco de mí</div>
         <h2>Recuerdos antes del gran día</h2>
+        <p class="gallery-intro">Un pequeño recorrido por momentos que forman parte de mi historia.</p>
       </div>
 
       <div id="galleryCarousel"
@@ -101,6 +117,7 @@
            role="region"
            aria-roledescription="carrusel"
            aria-label="Galería de recuerdos">
+        <div class="rail-aura" aria-hidden="true"></div>
         <div id="galleryStage" class="gallery-stage">
           <div id="gallery" class="gallery-track"></div>
 
@@ -128,30 +145,46 @@
       </div>
     </section>
 
-    <section class="section light">
+    <!-- Blur Reveal Deck -->
+    <section id="detailsSection" class="section light details-section">
       <div class="center reveal">
         <div class="eyebrow wine">Antes de venir</div>
         <h2>Los detalles</h2>
+        <p class="section-lead">Desliza las tarjetas para descubrir cada detalle.</p>
       </div>
-      <div class="grid two">
-        <article id="dressCodeCard" class="detail-card detail-card-photo reveal">
-          <img id="dressCodePhoto" class="detail-photo" alt="Inspiración de código de vestimenta">
-          <div class="detail-card-body">
-            <div class="detail-icon">◇</div>
-            <h3>Código de vestimenta</h3>
-            <p id="dressCodeText"></p>
-          </div>
-        </article>
 
-        <article id="giftsCard" class="detail-card detail-card-photo reveal">
-          <img id="giftsPhoto" class="detail-photo" alt="Mesa de regalos">
-          <div class="detail-card-body">
-            <div class="detail-icon">✧</div>
-            <h3>Mesa de regalos</h3>
-            <p id="giftsText"></p>
-            <a id="giftsLink" class="btn btn-outline-dark" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
-          </div>
-        </article>
+      <div id="detailDeck" class="detail-deck reveal" role="region" aria-label="Detalles de la celebración">
+        <div id="detailStack" class="detail-stack">
+          <article id="dressCodeCard" class="detail-card detail-deck-card">
+            <img id="dressCodePhoto" class="detail-photo" loading="lazy" decoding="async" alt="Inspiración de código de vestimenta">
+            <div class="detail-photo-shade"></div>
+            <div class="detail-card-body">
+              <div class="detail-kicker">01 · Estilo</div>
+              <div class="detail-icon">◇</div>
+              <h3>Código de vestimenta</h3>
+              <p id="dressCodeText"></p>
+            </div>
+          </article>
+
+          <article id="giftsCard" class="detail-card detail-deck-card">
+            <img id="giftsPhoto" class="detail-photo" loading="lazy" decoding="async" alt="Mesa de regalos">
+            <div class="detail-photo-shade"></div>
+            <div class="detail-card-body">
+              <div class="detail-kicker">02 · Detalles</div>
+              <div class="detail-icon">✧</div>
+              <h3>Mesa de regalos</h3>
+              <p id="giftsText"></p>
+              <a id="giftsLink" class="btn detail-link" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="detail-controls">
+          <button id="detailPrev" class="detail-nav" type="button" aria-label="Detalle anterior">←</button>
+          <div id="detailDots" class="detail-dots" aria-label="Seleccionar detalle"></div>
+          <button id="detailNext" class="detail-nav" type="button" aria-label="Detalle siguiente">→</button>
+        </div>
+        <p class="detail-hint">Toca las flechas o desliza</p>
       </div>
     </section>
 
@@ -237,7 +270,7 @@
     </div>
   </div>
 
-<script src="./config.js?v=6"></script>
-<script src="./app.js?v=6"></script>
+<script src="./config.js?v=7"></script>
+<script src="./app.js?v=7"></script>
 </body>
 </html>
