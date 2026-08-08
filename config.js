@@ -86,5 +86,5 @@ window.INVITACION = {
     pedirDatosEnRechazo: false
   },
 
-  pie: "XV Sofía · Invitación digital"
+  pie: "YRW Tech · yrw.events@gmail.com · Invitación digital"
 };
