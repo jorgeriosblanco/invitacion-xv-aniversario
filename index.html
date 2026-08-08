@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=3">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
@@ -96,7 +96,37 @@
         <div class="eyebrow">Un poco de mí</div>
         <h2>Recuerdos antes del gran día</h2>
       </div>
-      <div id="gallery" class="gallery"></div>
+
+      <div id="galleryCarousel"
+           class="gallery-carousel reveal"
+           role="region"
+           aria-roledescription="carrusel"
+           aria-label="Galería de recuerdos">
+        <div id="galleryStage" class="gallery-stage">
+          <div id="gallery" class="gallery-track"></div>
+
+          <button id="galleryPrev"
+                  class="gallery-nav gallery-prev"
+                  type="button"
+                  aria-label="Fotografía anterior">‹</button>
+
+          <button id="galleryNext"
+                  class="gallery-nav gallery-next"
+                  type="button"
+                  aria-label="Fotografía siguiente">›</button>
+        </div>
+
+        <div class="gallery-meta">
+          <div id="galleryDots"
+               class="gallery-dots"
+               aria-label="Seleccionar fotografía"></div>
+          <div id="galleryCounter"
+               class="gallery-counter"
+               aria-live="polite"></div>
+        </div>
+
+        <p class="gallery-hint">Desliza para explorar</p>
+      </div>
     </section>
 
     <section class="section light">
@@ -139,7 +169,6 @@
 
     <footer id="footerText"></footer>
   </main>
-
 
   <div id="rsvpModal" class="modal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
@@ -192,7 +221,7 @@
     </div>
   </div>
 
-  <script src="./config.js"></script>
-  <script src="./app.js"></script>
+<script src="./config.js?v=3"></script>
+<script src="./app.js?v=3"></script>
 </body>
 </html>
