@@ -87,9 +87,9 @@ window.INVITACION = {
     confirmacion: "Confirmo",
     rechazo: "No asistiré",
 
-    // false = "No asistiré" se registra solo en este navegador.
-    // true  = también "No asistiré" solicita datos y se envía por correo.
-    pedirDatosEnRechazo: false
+    // true = "Confirmo" y "No asistiré" siguen el mismo flujo:
+    // solicitan nombre/correo/WhatsApp y envían la respuesta por correo.
+    pedirDatosEnRechazo: true
   },
 
   pie: "YRW Tech · yrw.events@gmail.com · Invitación digital"
