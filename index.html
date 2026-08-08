@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#211027">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <title>Invitación XV</title>
-  <link rel="stylesheet" href="./styles.css?v=9">
+  <link rel="stylesheet" href="./styles.css?v=10">
 </head>
 <body class="locked">
   <div id="intro" class="intro">
@@ -15,9 +15,8 @@
       <div class="intro-photo-shade"></div>
 
       <div class="intro-copy">
-        <span class="intro-kicker">Invitación real</span>
         <strong id="introName">Sofía</strong>
-        <p id="introMessage">Un mensajero real ha llegado con tu invitación.</p>
+        <p id="introMessage">Tu invitación ha llegado.</p>
       </div>
 
       <button id="openInvitation"
@@ -66,17 +65,28 @@
     </section>
 
     <section class="section date-section">
-      <div class="center reveal">
+      <div class="date-shell reveal">
         <div class="eyebrow">Reserva la fecha</div>
-        <div id="dateDay" class="date-day">12</div>
-        <div id="dateMonth" class="date-month">DICIEMBRE</div>
-        <div id="dateYear" class="date-year">2026</div>
-        <div class="countdown">
-          <div><b id="days">000</b><span>Días</span></div>
-          <div><b id="hours">00</b><span>Horas</span></div>
-          <div><b id="minutes">00</b><span>Min</span></div>
-          <div><b id="seconds">00</b><span>Seg</span></div>
+        <div class="date-lockup">
+          <div id="dateDay" class="date-day">12</div>
+          <div class="date-side">
+            <div id="dateMonth" class="date-month">DICIEMBRE</div>
+            <div id="dateYear" class="date-year">2026</div>
+          </div>
         </div>
+
+        <div class="countdown-premium">
+          <span class="countdown-label">Faltan</span>
+          <strong><span id="days">000</span> días</strong>
+          <span class="countdown-sub">
+            <b id="hours">00</b> h · <b id="minutes">00</b> min · <b id="seconds">00</b> s
+          </span>
+        </div>
+
+        <div class="countdown-line" aria-hidden="true">
+          <span id="countdownProgress"></span>
+        </div>
+        <p class="countdown-emotion">La espera también forma parte de la historia.</p>
       </div>
     </section>
 
@@ -104,52 +114,55 @@
       <div id="locations" class="locations-cinema"></div>
     </section>
 
-    <section id="momentsSection" class="section dark moments-section">
-      <div class="moments-heading reveal">
+    <section id="momentsSection" class="section dark timeline-section">
+      <div class="timeline-heading reveal">
         <div class="eyebrow">El ritmo de la noche</div>
-        <h2>Momentos</h2>
-        <p>Desliza y descubre cómo se construye la noche.</p>
+        <h2>Itinerario</h2>
+        <p>Cada momento se irá revelando mientras recorres la celebración.</p>
       </div>
-      <div id="timeline" class="timeline-stack"></div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-rail" aria-hidden="true">
+          <span id="timelineFill"></span>
+        </div>
+        <div id="timeline" class="timeline"></div>
+      </div>
+
+      <div class="timeline-closing reveal">
+        <span class="timeline-closing-dot"></span>
+        <p>Te esperamos para celebrar juntos.</p>
+      </div>
     </section>
 
     <section id="gallerySection" class="section gallery-section">
-      <div class="center reveal">
+      <div id="galleryBackdropA" class="gallery-backdrop layer-a" aria-hidden="true"></div>
+      <div id="galleryBackdropB" class="gallery-backdrop layer-b" aria-hidden="true"></div>
+
+      <div class="center reveal gallery-heading">
         <div class="eyebrow">Un poco de mí</div>
-        <h2>Recuerdos antes del gran día</h2>
-        <p class="gallery-intro">Un pequeño recorrido por momentos que forman parte de mi historia.</p>
+        <h2>Capítulos antes del gran día</h2>
+        <p class="gallery-intro">Una historia visual que cambia de ritmo, detalle y personalidad.</p>
       </div>
 
       <div id="galleryCarousel"
-           class="gallery-carousel reveal"
+           class="story-carousel reveal"
            role="region"
            aria-roledescription="carrusel"
-           aria-label="Galería de recuerdos">
-        <div class="rail-aura" aria-hidden="true"></div>
-        <div id="galleryStage" class="gallery-stage">
-          <div id="gallery" class="gallery-track"></div>
-
-          <button id="galleryPrev"
-                  class="gallery-nav gallery-prev"
-                  type="button"
-                  aria-label="Fotografía anterior">‹</button>
-
-          <button id="galleryNext"
-                  class="gallery-nav gallery-next"
-                  type="button"
-                  aria-label="Fotografía siguiente">›</button>
+           aria-label="Historia visual">
+        <div id="galleryStage" class="story-stage">
+          <div id="gallery" class="story-track"></div>
         </div>
 
-        <div class="gallery-meta">
-          <div id="galleryDots"
-               class="gallery-dots"
-               aria-label="Seleccionar fotografía"></div>
-          <div id="galleryCounter"
-               class="gallery-counter"
-               aria-live="polite"></div>
+        <div class="story-caption">
+          <span id="galleryChapter" class="story-chapter">CAPÍTULO 01</span>
+          <h3 id="galleryTitle"></h3>
+          <p id="galleryText"></p>
         </div>
 
-        <p class="gallery-hint">Desliza para explorar</p>
+        <div class="story-progress">
+          <span id="galleryProgress"></span>
+        </div>
+        <p class="gallery-hint">Continúa descubriendo mi historia</p>
       </div>
     </section>
 
@@ -157,41 +170,47 @@
       <div class="center reveal">
         <div class="eyebrow wine">Antes de venir</div>
         <h2>Los detalles</h2>
-        <p class="section-lead">Desliza las tarjetas para descubrir cada detalle.</p>
+        <p class="section-lead">Cada tarjeta se asoma para que descubras que hay algo más.</p>
       </div>
 
       <div id="detailDeck" class="detail-deck reveal" role="region" aria-label="Detalles de la celebración">
-        <div id="detailStack" class="detail-stack">
-          <article id="dressCodeCard" class="detail-card detail-deck-card">
-            <img id="dressCodePhoto" class="detail-photo" loading="lazy" decoding="async" alt="Inspiración de código de vestimenta">
-            <div class="detail-photo-shade"></div>
-            <div class="detail-card-body">
-              <div class="detail-kicker">01 · Estilo</div>
-              <div class="detail-icon">◇</div>
-              <h3>Código de vestimenta</h3>
-              <p id="dressCodeText"></p>
-            </div>
-          </article>
+        <div id="detailViewport" class="detail-viewport">
+          <div id="detailTrack" class="detail-track">
+            <article id="dressCodeCard" class="detail-card detail-card-dress">
+              <img id="dressCodePhoto" class="detail-photo" loading="lazy" decoding="async" alt="Inspiración de código de vestimenta">
+              <div class="detail-photo-shade"></div>
+              <div class="detail-sheen" aria-hidden="true"></div>
+              <div class="detail-card-body">
+                <div class="detail-kicker">01 · Estilo</div>
+                <div class="detail-icon">◇</div>
+                <h3>Código de vestimenta</h3>
+                <p id="dressCodeText"></p>
+              </div>
+            </article>
 
-          <article id="giftsCard" class="detail-card detail-deck-card">
-            <img id="giftsPhoto" class="detail-photo" loading="lazy" decoding="async" alt="Mesa de regalos">
-            <div class="detail-photo-shade"></div>
-            <div class="detail-card-body">
-              <div class="detail-kicker">02 · Detalles</div>
-              <div class="detail-icon">✧</div>
-              <h3>Mesa de regalos</h3>
-              <p id="giftsText"></p>
-              <a id="giftsLink" class="btn detail-link" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
-            </div>
-          </article>
+            <article id="giftsCard" class="detail-card detail-card-gifts">
+              <img id="giftsPhoto" class="detail-photo" loading="lazy" decoding="async" alt="Mesa de regalos">
+              <div class="detail-photo-shade"></div>
+              <div class="detail-sparkles" aria-hidden="true"></div>
+              <div class="detail-card-body">
+                <div class="detail-kicker">02 · Detalles</div>
+                <div class="detail-icon">✧</div>
+                <h3>Mesa de regalos</h3>
+                <p id="giftsText"></p>
+                <a id="giftsLink" class="btn detail-link" target="_blank" rel="noopener">Ver mesa de regalos ↗</a>
+              </div>
+            </article>
+          </div>
+
+          <button id="detailPrev" class="detail-nav detail-prev" type="button" aria-label="Detalle anterior">←</button>
+          <button id="detailNext" class="detail-nav detail-next" type="button" aria-label="Detalle siguiente">→</button>
         </div>
 
-        <div class="detail-controls">
-          <button id="detailPrev" class="detail-nav" type="button" aria-label="Detalle anterior">←</button>
-          <div id="detailDots" class="detail-dots" aria-label="Seleccionar detalle"></div>
-          <button id="detailNext" class="detail-nav" type="button" aria-label="Detalle siguiente">→</button>
+        <div class="detail-progress-row">
+          <span id="detailCounter">1 / 2</span>
+          <div class="detail-progress"><span id="detailProgress"></span></div>
         </div>
-        <p class="detail-hint">Toca las flechas o desliza</p>
+        <p class="detail-hint">Desliza o toca las flechas</p>
       </div>
     </section>
 
@@ -213,15 +232,38 @@
       </div>
     </section>
 
+    <section id="finaleSection" class="finale-section">
+      <img id="finalePhoto" class="finale-photo" loading="lazy" decoding="async" alt="Cierre de la invitación">
+      <div class="finale-shade"></div>
+      <div class="finale-content reveal">
+        <div class="eyebrow">Una fecha para recordar</div>
+        <h2 id="finaleName">Sofía</h2>
+        <div class="finale-xv">XV AÑOS</div>
+        <p id="finaleDate">12 de diciembre de 2026</p>
+        <p id="finalePlace"></p>
+        <div class="finale-line"></div>
+        <p id="finalePhrase" class="finale-phrase">Gracias por formar parte de esta historia.</p>
+        <small id="finaleBrand">Creado con YRW Events</small>
+      </div>
+    </section>
+
     <footer id="footerText"></footer>
   </main>
 
   <div id="thankYouScreen" class="thankyou-screen" hidden>
+    <img id="thankYouPhoto" class="thankyou-photo" alt="">
+    <div class="thankyou-shade"></div>
     <div class="thankyou-shell">
       <div class="eyebrow">Gracias</div>
       <h2 id="thankYouTitle">Gracias por tu respuesta</h2>
-      <p id="thankYouText">Hemos recibido tu respuesta. Gracias por formar parte de este momento tan especial.</p>
-      <div class="thankyou-signature" id="thankYouSignature">XV Sofía Mendoza</div>
+      <p id="thankYouText">Hemos recibido tu respuesta.</p>
+      <div class="thankyou-summary">
+        <strong id="thankYouName">Sofía · XV Años</strong>
+        <span id="thankYouDate">12 de diciembre de 2026</span>
+        <span id="thankYouPlace"></span>
+      </div>
+      <div class="thankyou-signature" id="thankYouSignature">Nos vemos muy pronto.</div>
+      <small>Creado con YRW Events</small>
     </div>
   </div>
 
@@ -286,7 +328,7 @@
     </div>
   </div>
 
-<script src="./config.js?v=9"></script>
-<script src="./app.js?v=9"></script>
+<script src="./config.js?v=10"></script>
+<script src="./app.js?v=10"></script>
 </body>
 </html>

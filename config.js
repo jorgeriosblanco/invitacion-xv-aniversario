@@ -1,6 +1,5 @@
 // ==========================================================
-// CONFIGURACIÓN PRINCIPAL DE LA INVITACIÓN
-// Aquí cambias contenido sin tocar diseño ni lógica.
+// CONFIGURACIÓN PRINCIPAL DE LA INVITACIÓN — V10
 // ==========================================================
 window.INVITACION = {
   festejada: "Sofía Mendoza",
@@ -11,22 +10,13 @@ window.INVITACION = {
 
   intro: {
     foto: "./assets/fotos/sobre.jpg",
-    mensaje: "Un mensajero real ha llegado con tu invitación.",
+    mensaje: "Tu invitación ha llegado.",
     instruccion: "Abre aquí",
-
-    // Coordenadas normalizadas del centro del sello rojo dentro de sobre.jpg.
-    // El JavaScript corrige automáticamente el recorte producido por object-fit: cover,
-    // por lo que el hotspot seguirá alineado en distintos tamaños de teléfono.
     hotspot: {
       x: 0.421,
       y: 0.617,
       diametro: 108
     }
-  },
-
-  agradecimiento: {
-    titulo: "Gracias por tu respuesta",
-    texto: "Hemos recibido tu respuesta. Gracias por formar parte de este momento tan especial."
   },
 
   portada: {
@@ -62,25 +52,52 @@ window.INVITACION = {
   ],
 
   itinerario: [
-    { hora: "17:00", titulo: "Ceremonia", descripcion: "El comienzo de un día inolvidable." },
-    { hora: "19:00", titulo: "Bienvenida", descripcion: "Cóctel, fotografías y reencuentros." },
-    { hora: "20:00", titulo: "Cena", descripcion: "Una mesa para compartir historias." },
-    { hora: "21:30", titulo: "Vals", descripcion: "El momento más esperado de la noche." },
-    { hora: "22:00", titulo: "Fiesta", descripcion: "La noche apenas comienza." }
+    { hora: "17:00", titulo: "Ceremonia", descripcion: "El comienzo de un día inolvidable.", icono: "iglesia" },
+    { hora: "19:00", titulo: "Bienvenida", descripcion: "Cóctel, fotografías y reencuentros.", icono: "copa" },
+    { hora: "20:00", titulo: "Cena", descripcion: "Una mesa para compartir historias.", icono: "cubiertos" },
+    { hora: "21:30", titulo: "Vals", descripcion: "El momento más esperado de la noche.", icono: "musica" },
+    { hora: "22:00", titulo: "Fiesta", descripcion: "La noche apenas comienza.", icono: "estrella" }
   ],
 
   galeria: {
     activa: true,
-    fotos: [
-      "./assets/fotos/galeria-01.jpg",
-      "./assets/fotos/galeria-02.jpg",
-      "./assets/fotos/galeria-03.jpg"
+    capitulos: [
+      {
+        foto: "./assets/fotos/galeria-01.jpg",
+        titulo: "La gran presentación",
+        texto: "El vestido, la elegancia y ese instante en que todo comienza."
+      },
+      {
+        foto: "./assets/fotos/galeria-02.jpg",
+        titulo: "Mi propia forma de brillar",
+        texto: "Un toque contemporáneo, actitud y personalidad para romper la pose clásica."
+      },
+      {
+        foto: "./assets/fotos/galeria-03.jpg",
+        titulo: "Movimiento",
+        texto: "El vestido cobra vida cuando la fotografía deja de ser una pose."
+      },
+      {
+        foto: "./assets/fotos/detalle-zapatos.jpg",
+        titulo: "Los pequeños detalles",
+        texto: "Zapatos, textura y accesorios: la historia también vive en lo que casi pasa desapercibido."
+      },
+      {
+        foto: "./assets/fotos/detalle-corona.jpg",
+        titulo: "La corona",
+        texto: "Un instante íntimo antes de salir y convertirse en protagonista."
+      },
+      {
+        foto: "./assets/fotos/detalle-ramo.jpg",
+        titulo: "Entre mis manos",
+        texto: "El ramo, la joyería y los detalles completan la memoria del gran día."
+      }
     ]
   },
 
   dressCode: {
     activo: true,
-    texto: "Formal elegante. Reserva por favor los tonos champagne y rosa empolvado para la quinceañera.",
+    texto: "Formal elegante. Evita tonos demasiado cercanos al rosa empolvado del vestido de la quinceañera.",
     foto: "./assets/fotos/dresscode.jpg"
   },
 
@@ -91,20 +108,22 @@ window.INVITACION = {
     foto: "./assets/fotos/regalos.jpg"
   },
 
+  finale: {
+    foto: "./assets/fotos/finale.jpg",
+    frase: "Gracias por formar parte de esta historia.",
+    marca: "Creado con YRW Events"
+  },
+
   musica: {
     activa: false,
     archivo: "./assets/audio/musica.mp3"
   },
 
-  // URL pública de tu Google Apps Script desplegado como Web App.
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzZvdSNEZBBjl3Yf9xvaoWla_Z9mRcxk25MvUcfuMdVxdo5i_ZaPYTL1tL9brdyBT-n/exec",
 
   rsvp: {
     confirmacion: "Confirmo",
     rechazo: "No asistiré",
-
-    // true = "Confirmo" y "No asistiré" siguen el mismo flujo:
-    // solicitan nombre/correo/WhatsApp y envían la respuesta por correo.
     pedirDatosEnRechazo: true
   },
 

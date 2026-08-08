@@ -8,13 +8,25 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>1-Math.pow(1-clamp(t),3);
 const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const iconSVG=name=>{
+  const icons={
+    iglesia:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6v8M20 10h8M11 40h26M14 40V21l10-7 10 7v19M20 40V29h8v11M10 21h28"/></svg>`,
+    copa:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 9h20l-2 13a8 8 0 0 1-16 0L14 9Zm10 21v9m-7 0h14"/></svg>`,
+    cubiertos:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 7v14m-4-14v9a4 4 0 0 0 8 0V7m-4 14v20M31 7v34m0-24c6 0 8-4 8-10v10h-8Z"/></svg>`,
+    musica:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M19 34a5 5 0 1 1-5-5c2 0 3 .5 5 1V13l18-4v20M37 29a5 5 0 1 1-5-5c2 0 3 .5 5 1"/></svg>`,
+    estrella:`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 7 4.5 10 10.5 1-8 7 2.5 10.5L24 30l-9.5 5.5L17 25l-8-7 10.5-1L24 7Z"/></svg>`
+  };
+  return icons[name]||icons.estrella;
+};
+
 function render(){
   document.title=`XV ${C.festejada} — Invitación`;
+  const first=C.festejada.split(" ")[0];
 
-  setText("#introName",C.festejada.split(" ")[0]);
-  setText("#introMessage",C.intro?.mensaje||"");
-  setText("#introInstruction",C.intro?.instruccion||"Toca para abrir");
-  setText("#heroName",C.festejada.split(" ")[0]);
+  setText("#introName",first);
+  setText("#introMessage",C.intro?.mensaje||"Tu invitación ha llegado.");
+  setText("#introInstruction",C.intro?.instruccion||"Abre aquí");
+  setText("#heroName",first);
   setText("#heroMessage",C.portada.mensaje);
   setText("#quoteText",C.frase);
   setText("#dateText",C.fechaTexto);
@@ -25,19 +37,24 @@ function render(){
   setText("#finalInitial",C.inicial);
   setText("#footerText",C.pie);
 
-  setText("#thankYouTitle",C.agradecimiento?.titulo||"Gracias por tu respuesta");
-  setText("#thankYouText",C.agradecimiento?.texto||"Hemos recibido tu respuesta.");
-  setText("#thankYouSignature",`XV ${C.festejada}`);
-
   $("#introPhoto").src=C.intro?.foto||C.portada.foto;
-  $("#introPhoto").alt=`Mensajero real entregando la invitación de ${C.festejada}`;
   $("#heroPhoto").src=C.portada.foto;
-  $("#heroPhoto").alt=`Retrato de ${C.festejada}`;
   $("#storyPhoto").src=C.historia.foto;
-  $("#storyPhoto").alt=`Fotografía de ${C.festejada}`;
-
   if(C.dressCode?.foto)$("#dressCodePhoto").src=C.dressCode.foto;
   if(C.regalos?.foto)$("#giftsPhoto").src=C.regalos.foto;
+
+  const finalePhoto=C.finale?.foto||C.portada.foto;
+  $("#finalePhoto").src=finalePhoto;
+  $("#thankYouPhoto").src=finalePhoto;
+  setText("#finaleName",first);
+  setText("#finaleDate",C.fechaTexto);
+  setText("#finalePlace",C.ubicaciones?.[1]?.nombre||C.ubicaciones?.[0]?.nombre||"");
+  setText("#finalePhrase",C.finale?.frase||"Gracias por formar parte de esta historia.");
+  setText("#finaleBrand",C.finale?.marca||"Creado con YRW Events");
+
+  setText("#thankYouName",`${first} · XV Años`);
+  setText("#thankYouDate",C.fechaTexto);
+  setText("#thankYouPlace",C.ubicaciones?.[1]?.nombre||"");
 
   const d=new Date(C.fechaISO);
   setText("#dateDay",String(d.getDate()).padStart(2,"0"));
@@ -47,9 +64,7 @@ function render(){
   $("#locations").innerHTML=C.ubicaciones.map((u,i)=>`
     <article class="place-card reveal" data-place-index="${i}">
       <div class="place-media">
-        ${u.foto
-          ? `<img class="place-photo" src="${u.foto}" loading="lazy" decoding="async" alt="${u.tipo}: ${u.nombre}">`
-          : `<div class="map-art"></div>`}
+        <img class="place-photo" src="${u.foto}" loading="lazy" decoding="async" alt="${u.tipo}: ${u.nombre}">
         <div class="place-photo-shade"></div>
       </div>
       <div class="place-card-body">
@@ -61,34 +76,41 @@ function render(){
       </div>
     </article>`).join("");
 
-  $("#timeline").innerHTML=C.itinerario.map((i,index)=>`
-    <article class="moment-card" style="--i:${index}" data-moment-index="${index}">
-      <div class="moment-number">${String(index+1).padStart(2,"0")}</div>
-      <div class="moment-time">${i.hora}</div>
-      <h3>${i.titulo}</h3>
-      <p>${i.descripcion}</p>
-      <div class="moment-line"></div>
+  $("#timeline").innerHTML=C.itinerario.map((item,index)=>`
+    <article class="timeline-item" data-timeline-item>
+      <div class="timeline-node">
+        <span class="timeline-icon">${iconSVG(item.icono)}</span>
+      </div>
+      <div class="timeline-copy">
+        <span class="timeline-time">${item.hora}</span>
+        <h3>${item.titulo}</h3>
+        <p>${item.descripcion}</p>
+      </div>
     </article>`).join("");
 
-  if(C.galeria?.activa&&C.galeria.fotos?.length){
-    $("#gallery").innerHTML=C.galeria.fotos.map((src,i)=>`
-      <figure class="gallery-slide" data-index="${i}" aria-hidden="${i===0?"false":"true"}">
-        <img src="${src}" ${i===0?'fetchpriority="high"':'loading="lazy"'} decoding="async"
-             alt="Recuerdo ${i+1} de ${C.festejada}" draggable="false">
-        <figcaption>0${i+1}</figcaption>
+  const chapters=C.galeria?.capitulos||[];
+  if(C.galeria?.activa&&chapters.length){
+    $("#gallery").innerHTML=chapters.map((item,i)=>`
+      <figure class="story-slide" data-index="${i}" aria-hidden="${i===0?"false":"true"}">
+        <img src="${item.foto}" ${i===0?'fetchpriority="high"':'loading="lazy"'} decoding="async"
+             alt="${item.titulo}" draggable="false">
       </figure>`).join("");
-
-    $("#galleryDots").innerHTML=C.galeria.fotos.map((_,i)=>`
-      <button class="gallery-dot${i===0?" active":""}"
-              type="button"
-              data-gallery-dot="${i}"
-              aria-label="Ver fotografía ${i+1}"
-              aria-current="${i===0?"true":"false"}"></button>`).join("");
+    setGalleryText(0);
   }else hide("#gallerySection");
 
   if(!C.dressCode?.activo)hide("#dressCodeCard");
   if(C.regalos?.activo)$("#giftsLink").href=C.regalos.enlace; else hide("#giftsCard");
+
   if(C.musica?.activa)$("#music").src=C.musica.archivo; else hide("#musicButton");
+}
+
+function setGalleryText(index){
+  const items=C.galeria?.capitulos||[];
+  const item=items[index];
+  if(!item)return;
+  setText("#galleryChapter",`CAPÍTULO ${String(index+1).padStart(2,"0")}`);
+  setText("#galleryTitle",item.titulo);
+  setText("#galleryText",item.texto);
 }
 
 function initScrollCinema(){
@@ -101,7 +123,6 @@ function initScrollCinema(){
   const storyMedia=$("#storyMedia");
   const storyPhoto=$("#storyPhoto");
   const storyCopy=$("#storyCopy");
-
   let ticking=false;
 
   const visibleProgress=el=>{
@@ -112,289 +133,275 @@ function initScrollCinema(){
   function update(){
     ticking=false;
 
-    if(reduceMotion){
-      heroMedia.style.width="100%";
-      heroMedia.style.height="100%";
-      heroMedia.style.borderRadius="0px";
-      heroMedia.style.transform="translate(-50%,-50%)";
-      heroCopy.style.opacity="1";
-      storyMedia.style.clipPath="inset(0% 0% 0% 0% round 30px)";
-      storyPhoto.style.transform="none";
-      storyCopy.style.transform="none";
-      storyCopy.style.opacity="1";
-      return;
+    if(!reduceMotion){
+      const hr=heroSection.getBoundingClientRect();
+      const travel=Math.max(1,heroSection.offsetHeight-innerHeight);
+      const hp=ease(clamp(-hr.top/travel));
+      const containerW=heroSticky.clientWidth;
+      const viewportH=heroSticky.clientHeight;
+      const startW=Math.min(containerW*.84,480);
+      const startH=Math.min(startW*4/3,viewportH*.74);
+
+      heroMedia.style.width=`${lerp(startW,containerW,hp)}px`;
+      heroMedia.style.height=`${lerp(startH,viewportH,hp)}px`;
+      heroMedia.style.borderRadius=`${lerp(34,0,hp)}px`;
+      heroMedia.style.transform=`translate(-50%,-50%) translateY(${lerp(16,0,hp)}px)`;
+      heroPhoto.style.transform=`scale(${lerp(1.09,1.02,hp)}) translateY(${lerp(-10,0,hp)}px)`;
+      heroCopy.style.opacity=String(lerp(.50,1,hp));
+      heroCopy.style.transform=`translateY(${lerp(18,0,hp)}px)`;
+
+      const sp=ease(visibleProgress(storySection));
+      const inset=lerp(11,0,sp);
+      storyMedia.style.clipPath=`inset(${inset}% ${lerp(7,0,sp)}% ${inset}% ${lerp(7,0,sp)}% round ${lerp(42,28,sp)}px)`;
+      storyPhoto.style.transform=`scale(1.08) translateY(${lerp(-24,22,sp)}px)`;
+      storyCopy.style.transform=`translateY(${lerp(44,0,sp)}px)`;
+      storyCopy.style.opacity=String(lerp(.35,1,sp));
+
+      $$(".place-card").forEach(card=>{
+        const p=ease(visibleProgress(card));
+        const photo=card.querySelector(".place-photo");
+        const body=card.querySelector(".place-card-body");
+        if(photo)photo.style.transform=`scale(${lerp(1.12,1.01,p)}) translateY(${lerp(-18,12,p)}px)`;
+        if(body)body.style.transform=`translateY(${lerp(34,0,p)}px)`;
+      });
     }
-
-    const hr=heroSection.getBoundingClientRect();
-    const travel=Math.max(1,heroSection.offsetHeight-innerHeight);
-    const hp=ease(clamp(-hr.top/travel));
-    const containerW=heroSticky.clientWidth;
-    const viewportH=heroSticky.clientHeight;
-    const startW=Math.min(containerW*.84,480);
-    const startH=Math.min(startW*4/3,viewportH*.74);
-
-    heroMedia.style.width=`${lerp(startW,containerW,hp)}px`;
-    heroMedia.style.height=`${lerp(startH,viewportH,hp)}px`;
-    heroMedia.style.borderRadius=`${lerp(34,0,hp)}px`;
-    heroMedia.style.transform=`translate(-50%,-50%) translateY(${lerp(16,0,hp)}px)`;
-    heroPhoto.style.transform=`scale(${lerp(1.09,1.02,hp)}) translateY(${lerp(-10,0,hp)}px)`;
-    heroCopy.style.opacity=String(lerp(.50,1,hp));
-    heroCopy.style.transform=`translateY(${lerp(18,0,hp)}px)`;
-
-    const sp=ease(visibleProgress(storySection));
-    const inset=lerp(11,0,sp);
-    storyMedia.style.clipPath=`inset(${inset}% ${lerp(7,0,sp)}% ${inset}% ${lerp(7,0,sp)}% round ${lerp(42,28,sp)}px)`;
-    storyPhoto.style.transform=`scale(1.08) translateY(${lerp(-24,22,sp)}px)`;
-    storyCopy.style.transform=`translateY(${lerp(44,0,sp)}px)`;
-    storyCopy.style.opacity=String(lerp(.35,1,sp));
-
-    $$(".place-card").forEach(card=>{
-      const p=ease(visibleProgress(card));
-      const photo=card.querySelector(".place-photo");
-      const body=card.querySelector(".place-card-body");
-      if(photo)photo.style.transform=`scale(${lerp(1.12,1.01,p)}) translateY(${lerp(-18,12,p)}px)`;
-      if(body)body.style.transform=`translateY(${lerp(34,0,p)}px)`;
-    });
-
-    $$(".moment-card").forEach((card,i)=>{
-      const rect=card.getBoundingClientRect();
-      const stickyTop=86+i*11;
-      const stuck=rect.top<=stickyTop+2;
-      card.classList.toggle("is-stacked",stuck);
-    });
   }
 
-  function request(){
+  const request=()=>{
     if(!ticking){
       ticking=true;
       requestAnimationFrame(update);
     }
-  }
-
+  };
   addEventListener("scroll",request,{passive:true});
   addEventListener("resize",request,{passive:true});
   update();
 }
 
-function initGalleryCarousel(){
-  if(!C.galeria?.activa||!C.galeria.fotos?.length)return;
+function initTimeline(){
+  const section=$("#momentsSection");
+  const fill=$("#timelineFill");
+  const items=$$("[data-timeline-item]");
+  if(!section||!fill||!items.length)return;
 
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting)entry.target.classList.add("visible");
+    });
+  },{threshold:.32});
+  items.forEach(item=>observer.observe(item));
+
+  let ticking=false;
+  const update=()=>{
+    ticking=false;
+    const r=section.getBoundingClientRect();
+    const start=innerHeight*.70;
+    const end=innerHeight*.25;
+    const total=Math.max(1,r.height-(start-end));
+    const progressed=clamp((start-r.top)/total);
+    fill.style.transform=`scaleY(${progressed})`;
+  };
+  addEventListener("scroll",()=>{
+    if(!ticking){
+      ticking=true;
+      requestAnimationFrame(update);
+    }
+  },{passive:true});
+  addEventListener("resize",update,{passive:true});
+  update();
+}
+
+function initGalleryStory(){
   const carousel=$("#galleryCarousel");
   const stage=$("#galleryStage");
-  const slides=$$(".gallery-slide");
-  const dots=$$(".gallery-dot");
-  const prev=$("#galleryPrev");
-  const next=$("#galleryNext");
-  const counter=$("#galleryCounter");
+  const slides=$$(".story-slide");
+  const progress=$("#galleryProgress");
+  const backdropA=$("#galleryBackdropA");
+  const backdropB=$("#galleryBackdropB");
+  const items=C.galeria?.capitulos||[];
   const total=slides.length;
+  if(!carousel||!stage||!total)return;
 
   let current=0;
   let timer=null;
-  let isVisible=false;
-  let pointerStartX=0;
-  let pointerStartY=0;
-  let pointerActive=false;
+  let visible=false;
+  let userControlled=false;
+  let pointer=false;
+  let sx=0,sy=0,dx=0;
+  let activeBackdrop=0;
 
-  const signedDistance=(index)=>{
+  const signedDistance=index=>{
     let d=(index-current+total)%total;
     if(d>total/2)d-=total;
     return d;
   };
 
-  function resetDrag(){
-    stage.style.setProperty("--drag-x","0px");
-    stage.style.setProperty("--drag-rotate","0deg");
-  }
+  const updateBackdrop=index=>{
+    const url=`url("${items[index].foto}")`;
+    const next=activeBackdrop===0?backdropB:backdropA;
+    const prev=activeBackdrop===0?backdropA:backdropB;
+    next.style.backgroundImage=url;
+    next.classList.add("active");
+    prev.classList.remove("active");
+    activeBackdrop=activeBackdrop===0?1:0;
+  };
 
   function paint(){
     slides.forEach((slide,i)=>{
       const d=signedDistance(i);
       slide.classList.remove("active","prev","next","far");
-
-      if(d===0){
-        slide.classList.add("active");
-        slide.setAttribute("aria-hidden","false");
-      }else if(d===-1 || (total===2&&d===1&&i!==current)){
-        slide.classList.add("prev");
-        slide.setAttribute("aria-hidden","true");
-      }else if(d===1){
-        slide.classList.add("next");
-        slide.setAttribute("aria-hidden","true");
-      }else{
-        slide.classList.add("far");
-        slide.setAttribute("aria-hidden","true");
-      }
+      if(d===0)slide.classList.add("active");
+      else if(d===-1)slide.classList.add("prev");
+      else if(d===1)slide.classList.add("next");
+      else slide.classList.add("far");
+      slide.setAttribute("aria-hidden",d===0?"false":"true");
     });
 
-    dots.forEach((dot,i)=>{
-      const active=i===current;
-      dot.classList.toggle("active",active);
-      dot.setAttribute("aria-current",active?"true":"false");
-    });
-
-    counter.textContent=`${String(current+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-
-    if(total<2){
-      prev.hidden=true;
-      next.hidden=true;
-      $("#galleryDots").hidden=true;
-    }
+    setGalleryText(current);
+    progress.style.width=`${((current+1)/total)*100}%`;
+    updateBackdrop(current);
   }
+
+  const stop=()=>{
+    if(timer){clearInterval(timer);timer=null}
+  };
+
+  const start=()=>{
+    if(reduceMotion||userControlled||!visible||document.hidden||total<2)return;
+    stop();
+    timer=setInterval(()=>go(current+1,false),4600);
+  };
 
   function go(index,manual=true){
     current=(index+total)%total;
-    resetDrag();
+    stage.style.setProperty("--drag-x","0px");
     paint();
-    if(manual)restartAutoplay();
+    if(manual){
+      userControlled=true;
+      stop();
+    }
   }
-
-  function stopAutoplay(){
-    if(timer){clearInterval(timer);timer=null}
-  }
-
-  function startAutoplay(){
-    if(reduceMotion||total<2||!isVisible||document.hidden)return;
-    stopAutoplay();
-    timer=setInterval(()=>go(current+1,false),4800);
-  }
-
-  function restartAutoplay(){
-    stopAutoplay();
-    startAutoplay();
-  }
-
-  prev.addEventListener("click",()=>go(current-1));
-  next.addEventListener("click",()=>go(current+1));
-  dots.forEach((dot,i)=>dot.addEventListener("click",()=>go(i)));
 
   stage.addEventListener("pointerdown",e=>{
     if(e.pointerType==="mouse"&&e.button!==0)return;
-    pointerActive=true;
-    pointerStartX=e.clientX;
-    pointerStartY=e.clientY;
-    stopAutoplay();
+    pointer=true; sx=e.clientX; sy=e.clientY; dx=0;
+    stop();
     try{stage.setPointerCapture(e.pointerId)}catch{}
   });
 
   stage.addEventListener("pointermove",e=>{
-    if(!pointerActive)return;
-    const dx=clamp(e.clientX-pointerStartX,-90,90);
-    stage.style.setProperty("--drag-x",`${dx*.34}px`);
-    stage.style.setProperty("--drag-rotate",`${dx*.045}deg`);
+    if(!pointer)return;
+    dx=clamp(e.clientX-sx,-100,100);
+    stage.style.setProperty("--drag-x",`${dx*.28}px`);
   });
 
   stage.addEventListener("pointerup",e=>{
-    if(!pointerActive)return;
-    pointerActive=false;
-    const dx=e.clientX-pointerStartX;
-    const dy=e.clientY-pointerStartY;
-    resetDrag();
-
-    if(Math.abs(dx)>42&&Math.abs(dx)>Math.abs(dy)*1.12){
-      go(current+(dx<0?1:-1));
-    }else{
-      startAutoplay();
+    if(!pointer)return;
+    pointer=false;
+    const x=e.clientX-sx;
+    const y=e.clientY-sy;
+    stage.style.setProperty("--drag-x","0px");
+    if(Math.abs(x)>42&&Math.abs(x)>Math.abs(y)*1.15)go(current+(x<0?1:-1),true);
+    else{
+      userControlled=true;
+      stop();
     }
   });
 
   stage.addEventListener("pointercancel",()=>{
-    pointerActive=false;
-    resetDrag();
-    startAutoplay();
+    pointer=false;
+    stage.style.setProperty("--drag-x","0px");
   });
 
-  carousel.addEventListener("mouseenter",stopAutoplay);
-  carousel.addEventListener("mouseleave",startAutoplay);
-  carousel.addEventListener("focusin",stopAutoplay);
-  carousel.addEventListener("focusout",()=>setTimeout(startAutoplay,0));
+  const io=new IntersectionObserver(entries=>{
+    const e=entries[0];
+    visible=e.isIntersecting&&e.intersectionRatio>.28;
+    if(visible){
+      carousel.classList.add("story-seen");
+      start();
+    }else stop();
+  },{threshold:[0,.28,.55]});
+  io.observe(carousel);
 
   document.addEventListener("visibilitychange",()=>{
-    if(document.hidden)stopAutoplay();
-    else startAutoplay();
+    if(document.hidden)stop(); else start();
   });
 
-  const observer=new IntersectionObserver(entries=>{
-    const entry=entries[0];
-    isVisible=entry.isIntersecting&&entry.intersectionRatio>.25;
-    if(isVisible){
-      carousel.classList.add("carousel-seen");
-      startAutoplay();
-    }else stopAutoplay();
-  },{threshold:[0,.25,.55]});
-
-  observer.observe(carousel);
+  backdropA.style.backgroundImage=`url("${items[0].foto}")`;
+  backdropA.classList.add("active");
+  activeBackdrop=0;
   paint();
 }
 
 function initDetailDeck(){
   const deck=$("#detailDeck");
-  if(!deck)return;
-
-  const cards=$$(".detail-deck-card").filter(card=>getComputedStyle(card).display!=="none");
+  const viewport=$("#detailViewport");
+  const track=$("#detailTrack");
+  const cards=$$(".detail-card").filter(card=>getComputedStyle(card).display!=="none");
   const prev=$("#detailPrev");
   const next=$("#detailNext");
-  const dots=$("#detailDots");
+  const progress=$("#detailProgress");
+  const counter=$("#detailCounter");
+  if(!deck||!viewport||!track||!cards.length)return;
+
   let current=0;
-  let startX=0;
-  let startY=0;
-  let activePointer=false;
+  let pointer=false,sx=0,sy=0;
+  let peeked=false;
 
-  if(!cards.length){
-    hide("#detailsSection");
-    return;
-  }
+  function paint(animate=true){
+    track.style.transition=animate?"transform .72s cubic-bezier(.18,.84,.24,1)":"none";
+    const cardW=cards[0].getBoundingClientRect().width;
+    const gap=parseFloat(getComputedStyle(track).gap)||14;
+    const step=cardW+gap;
+    track.style.transform=`translateX(${-current*step}px)`;
 
-  dots.innerHTML=cards.map((_,i)=>`
-    <button type="button" class="detail-dot${i===0?" active":""}"
-            data-detail-dot="${i}" aria-label="Ver detalle ${i+1}"></button>`).join("");
-
-  const dotButtons=$$(".detail-dot");
-
-  function paint(){
     cards.forEach((card,i)=>{
-      const d=(i-current+cards.length)%cards.length;
-      card.classList.remove("active","next","behind");
-      if(i===current)card.classList.add("active");
-      else if(d===1)card.classList.add("next");
-      else card.classList.add("behind");
-      card.setAttribute("aria-hidden",i===current?"false":"true");
+      card.classList.toggle("active",i===current);
+      card.classList.toggle("adjacent",Math.abs(i-current)===1);
     });
-    dotButtons.forEach((dot,i)=>dot.classList.toggle("active",i===current));
+
+    counter.textContent=`${current+1} / ${cards.length}`;
+    progress.style.width=`${((current+1)/cards.length)*100}%`;
+    prev.disabled=current===0;
+    next.disabled=current===cards.length-1;
   }
 
   const go=index=>{
-    current=(index+cards.length)%cards.length;
-    paint();
+    current=clamp(index,0,cards.length-1);
+    paint(true);
   };
 
   prev.addEventListener("click",()=>go(current-1));
   next.addEventListener("click",()=>go(current+1));
-  dotButtons.forEach((dot,i)=>dot.addEventListener("click",()=>go(i)));
 
-  deck.addEventListener("pointerdown",e=>{
+  viewport.addEventListener("pointerdown",e=>{
     if(e.target.closest("a,button"))return;
-    activePointer=true;
-    startX=e.clientX;
-    startY=e.clientY;
+    pointer=true;sx=e.clientX;sy=e.clientY;
+  });
+  viewport.addEventListener("pointerup",e=>{
+    if(!pointer)return;
+    pointer=false;
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(Math.abs(dx)>42&&Math.abs(dx)>Math.abs(dy)*1.2)go(current+(dx<0?1:-1));
   });
 
-  deck.addEventListener("pointerup",e=>{
-    if(!activePointer)return;
-    activePointer=false;
-    const dx=e.clientX-startX;
-    const dy=e.clientY-startY;
-    if(Math.abs(dx)>42&&Math.abs(dx)>Math.abs(dy)*1.2){
-      go(current+(dx<0?1:-1));
+  const io=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&!peeked&&cards.length>1&&!reduceMotion){
+      peeked=true;
+      setTimeout(()=>{
+        if(current!==0)return;
+        const cardW=cards[0].getBoundingClientRect().width;
+        const gap=parseFloat(getComputedStyle(track).gap)||14;
+        track.style.transition="transform .48s ease";
+        track.style.transform=`translateX(${-Math.min((cardW+gap)*.13,52)}px)`;
+        setTimeout(()=>paint(true),650);
+      },450);
     }
-  });
+  },{threshold:.55});
+  io.observe(deck);
 
-  if(cards.length<2){
-    prev.hidden=true;
-    next.hidden=true;
-    dots.hidden=true;
-  }
-
-  paint();
+  addEventListener("resize",()=>paint(false),{passive:true});
+  paint(false);
 }
 
 function initReveal(){
@@ -420,30 +427,20 @@ function positionIntroHotspot(){
   const img=$("#introPhoto");
   const scene=$(".intro-scene");
   const hotspot=$("#openInvitation");
-
-  if(!img || !scene || !hotspot || !img.naturalWidth || !img.naturalHeight)return;
+  if(!img||!scene||!hotspot||!img.naturalWidth||!img.naturalHeight)return;
 
   const h=C.intro?.hotspot||{};
   const nx=Number.isFinite(h.x)?h.x:.421;
   const ny=Number.isFinite(h.y)?h.y:.617;
-
   const sceneW=scene.clientWidth;
   const sceneH=scene.clientHeight;
-  const imageW=img.naturalWidth;
-  const imageH=img.naturalHeight;
-
-  // Replica exactamente el cálculo de object-fit: cover.
-  const scale=Math.max(sceneW/imageW,sceneH/imageH);
-  const renderedW=imageW*scale;
-  const renderedH=imageH*scale;
+  const scale=Math.max(sceneW/img.naturalWidth,sceneH/img.naturalHeight);
+  const renderedW=img.naturalWidth*scale;
+  const renderedH=img.naturalHeight*scale;
   const offsetX=(sceneW-renderedW)/2;
   const offsetY=(sceneH-renderedH)/2;
-
   const x=offsetX+(nx*renderedW);
   const y=offsetY+(ny*renderedH);
-
-  // Área táctil más grande que el sello real, pero el aro visual
-  // permanece centrado sobre la cera.
   const requested=Number(h.diametro)||108;
   const responsive=Math.min(sceneW,sceneH)*.27;
   const size=clamp(Math.min(requested,responsive),82,112);
@@ -457,12 +454,9 @@ function positionIntroHotspot(){
 function initIntro(){
   const btn=$("#openInvitation");
   const img=$("#introPhoto");
-
   btn.addEventListener("click",openInvitation);
-
   if(img.complete)positionIntroHotspot();
   else img.addEventListener("load",positionIntroHotspot,{once:true});
-
   addEventListener("resize",positionIntroHotspot,{passive:true});
   addEventListener("orientationchange",()=>setTimeout(positionIntroHotspot,120),{passive:true});
 }
@@ -476,13 +470,19 @@ function initProgress(){
 }
 
 function initCountdown(){
-  const t=new Date(C.fechaISO).getTime();
+  const eventTime=new Date(C.fechaISO).getTime();
+  const startTime=Date.now();
+  const initial=Math.max(1,eventTime-startTime);
+
   const tick=()=>{
-    const x=Math.max(0,t-Date.now());
-    setText("#days",String(Math.floor(x/86400000)).padStart(3,"0"));
-    setText("#hours",String(Math.floor((x%86400000)/3600000)).padStart(2,"0"));
-    setText("#minutes",String(Math.floor((x%3600000)/60000)).padStart(2,"0"));
-    setText("#seconds",String(Math.floor((x%60000)/1000)).padStart(2,"0"));
+    const remaining=Math.max(0,eventTime-Date.now());
+    setText("#days",String(Math.floor(remaining/86400000)));
+    setText("#hours",String(Math.floor((remaining%86400000)/3600000)).padStart(2,"0"));
+    setText("#minutes",String(Math.floor((remaining%3600000)/60000)).padStart(2,"0"));
+    setText("#seconds",String(Math.floor((remaining%60000)/1000)).padStart(2,"0"));
+
+    const elapsed=clamp(1-(remaining/initial));
+    $("#countdownProgress").style.width=`${Math.max(4,elapsed*100)}%`;
   };
   tick();setInterval(tick,1000);
 }
@@ -504,7 +504,6 @@ const RSVP_STORAGE_KEY=`yrw-rsvp:${C.festejada}:${C.fechaISO}`;
 function getStoredRSVP(){
   try{return localStorage.getItem(RSVP_STORAGE_KEY)||""}catch{return ""}
 }
-
 function storeRSVP(response){
   try{localStorage.setItem(RSVP_STORAGE_KEY,response)}catch{}
 }
@@ -517,15 +516,12 @@ function applyCompletedRSVP(response,shouldStore=true){
     btn.setAttribute("aria-disabled","true");
   });
 
-  const card=$("#rsvp .rsvp-card");
-  card?.classList.add("answered");
-
+  $("#rsvp .rsvp-card")?.classList.add("answered");
   if(response==="Confirmo"){
     $("#rsvpStatus").textContent="✓ Ya confirmaste tu asistencia. ¡Te esperamos!";
   }else{
     $("#rsvpStatus").textContent="Respuesta registrada: no asistirás. Gracias por avisarnos.";
   }
-
   $("#exitButton").hidden=false;
 }
 
@@ -549,7 +545,6 @@ function closeRSVPModal(){
 
 async function submitRSVPForm(e){
   e.preventDefault();
-
   const status=$("#formStatus");
   const submit=$("#submitRSVP");
   const nombre=$("#guestName").value.trim();
@@ -558,16 +553,11 @@ async function submitRSVPForm(e){
   const comentarios=$("#guestComments").value.trim().slice(0,280);
   const honeypot=$("#website").value.trim();
 
-  if(honeypot){
-    closeRSVPModal();
-    return;
-  }
-
-  if(!nombre || !correo || !whatsapp){
+  if(honeypot){closeRSVPModal();return}
+  if(!nombre||!correo||!whatsapp){
     status.textContent="Completa todos los campos obligatorios.";
     return;
   }
-
   if(!C.rsvpEndpoint){
     status.textContent="Modo demo: configura rsvpEndpoint en config.js para enviar el correo.";
     return;
@@ -579,10 +569,7 @@ async function submitRSVPForm(e){
 
   const data=new URLSearchParams({
     respuesta:pendingResponse,
-    nombre,
-    correo,
-    whatsapp,
-    comentarios,
+    nombre,correo,whatsapp,comentarios,
     evento:`XV ${C.festejada}`,
     fecha:C.fechaTexto
   });
@@ -612,8 +599,24 @@ async function submitRSVPForm(e){
   }
 }
 
+function prepareThankYou(response){
+  const first=C.festejada.split(" ")[0];
+  if(response==="Confirmo"){
+    setText("#thankYouTitle","Gracias por confirmar");
+    setText("#thankYouText","Tu respuesta quedó registrada. Nos dará muchísimo gusto compartir este día contigo.");
+    setText("#thankYouSignature","Nos vemos muy pronto.");
+  }else{
+    setText("#thankYouTitle","Gracias por avisarnos");
+    setText("#thankYouText","Tu respuesta quedó registrada. Gracias por acompañarnos de corazón, aunque esta vez sea a la distancia.");
+    setText("#thankYouSignature","Siempre formarás parte de este momento.");
+  }
+  setText("#thankYouName",`${first} · XV Años`);
+}
+
 function exitInvitation(){
   closeRSVPModal();
+  const response=getStoredRSVP()||pendingResponse;
+  prepareThankYou(response);
 
   if(C.musica?.activa){
     const audio=$("#music");
@@ -622,32 +625,22 @@ function exitInvitation(){
   }
 
   window.scrollTo({top:0,left:0,behavior:"auto"});
-
   const thanks=$("#thankYouScreen");
   thanks.hidden=false;
   document.body.classList.add("locked","thankyou-open");
-
-  setTimeout(()=>{
-    thanks.classList.add("visible");
-  },20);
+  setTimeout(()=>thanks.classList.add("visible"),20);
 }
 
 function initRSVP(){
   const stored=getStoredRSVP();
-  if(stored==="Confirmo"||stored==="No asistiré"){
-    applyCompletedRSVP(stored,false);
-  }
+  if(stored==="Confirmo"||stored==="No asistiré")applyCompletedRSVP(stored,false);
 
   $$("[data-response]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       if(getStoredRSVP())return;
       const response=btn.dataset.response;
-
-      if(response==="Confirmo" || C.rsvp?.pedirDatosEnRechazo){
-        openRSVPModal(response);
-      }else{
-        applyCompletedRSVP(response,true);
-      }
+      if(response==="Confirmo"||C.rsvp?.pedirDatosEnRechazo)openRSVPModal(response);
+      else applyCompletedRSVP(response,true);
     });
   });
 
@@ -659,7 +652,8 @@ function initRSVP(){
 
 function initActions(){
   $("#calendarButton").addEventListener("click",()=>{
-    const start=new Date(C.fechaISO),end=new Date(start.getTime()+6*60*60*1000),fmt=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z$/,"Z");
+    const start=new Date(C.fechaISO),end=new Date(start.getTime()+6*60*60*1000);
+    const fmt=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z$/,"Z");
     const ics=`BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Invitacion XV//ES
@@ -673,13 +667,19 @@ LOCATION:${C.ubicaciones?.[1]?.direccion||""}
 DESCRIPTION:${C.fechaTexto}
 END:VEVENT
 END:VCALENDAR`;
-    const blob=new Blob([ics],{type:"text/calendar;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
-    a.href=url;a.download=`XV-${C.festejada.replace(/\s+/g,"-")}.ics`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    const blob=new Blob([ics],{type:"text/calendar;charset=utf-8"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download=`XV-${C.festejada.replace(/\s+/g,"-")}.ics`;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
 
   $("#copyButton").addEventListener("click",async()=>{
     const text=`XV ${C.festejada}\n${C.fechaTexto}\n${C.ubicaciones.map(u=>`${u.tipo}: ${u.hora} · ${u.nombre}`).join("\n")}`;
-    try{await navigator.clipboard.writeText(text);$("#copyButton").textContent="✓ Copiado"}catch{alert(text)}
+    try{
+      await navigator.clipboard.writeText(text);
+      $("#copyButton").textContent="✓ Copiado";
+    }catch{alert(text)}
     setTimeout(()=>$("#copyButton").textContent="Copiar datos",1500);
   });
 }
@@ -688,7 +688,8 @@ render();
 initIntro();
 initReveal();
 initScrollCinema();
-initGalleryCarousel();
+initTimeline();
+initGalleryStory();
 initDetailDeck();
 initProgress();
 initCountdown();
